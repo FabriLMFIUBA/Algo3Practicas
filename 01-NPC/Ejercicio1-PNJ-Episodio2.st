@@ -9,7 +9,7 @@ DenotativeObject subclass: #CarolinaLaCuranderaDeRiverwood
 
 !classDefinition: 'CarolinaLaCuranderaDeRiverwood class' category: 'Ejercicio1-PNJ-Episodio2'!
 CarolinaLaCuranderaDeRiverwood class
-	instanceVariableNames: 'frases frasesParaJugadoresPrometedores cantidadDeInteracciones cantidadDeInteraccionesPorJugador'!
+	instanceVariableNames: 'frasesParaJugadoresDesconocidos frasesParaJugadoresPrometedores cantidadDeInteracciones cantidadDeInteraccionesPorJugador'!
 
 !CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 16:58:05'!
 interactuar
@@ -38,9 +38,9 @@ ascenderAPrometedor: personajeJugable
 	self olvidarJugador: personajeJugable .
 	TreborElGuardiaDeSkyrim olvidarJugador: personajeJugable .! !
 
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 17:35:41'!
+!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'LEI 9/28/2021 21:28:59'!
 esCalificadoComoPrometedor: cantidadInteracciones
-	^ cantidadInteracciones >= (frases size).! !
+	^ cantidadInteracciones >= (frasesParaJugadoresDesconocidos size).! !
 
 !CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 16:58:05'!
 recordarInteraccion
@@ -63,28 +63,28 @@ recordarInteraccionCon: personajeJugable
 responderSegunCantidadDeInteracciones
 	^ frases at: (cantidadDeInteracciones min: frases size)! !
 
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 17:26:52'!
+!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'LEI 9/28/2021 21:28:11'!
 responderSegunCantidadDeInteraccionesCon: personajeJugable
 	|dialogoAElegir|
 	dialogoAElegir  := cantidadDeInteraccionesPorJugador at: personajeJugable ifAbsent: [1].
 	personajeJugable esJugadorPrometedorEnRiverWood ifTrue:[
-		^frasesParaJugadoresPrometedores at: (dialogoAElegir min: frases size) ]
+		^frasesParaJugadoresPrometedores at: (dialogoAElegir min: frasesParaJugadoresPrometedores size) ]
 	ifFalse:[
 		
 		(self esCalificadoComoPrometedor: dialogoAElegir) ifTrue:[
 			self ascenderAPrometedor: personajeJugable .
 		] .
-	^ frases at: (dialogoAElegir min: frases size).] .! !
+	^ frasesParaJugadoresDesconocidos at: (dialogoAElegir min: frasesParaJugadoresDesconocidos size).] .! !
 
 
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'as yet unclassified' stamp: 'FLM 9/28/2021 17:36:48'!
+!CarolinaLaCuranderaDeRiverwood class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	frases := #('¿Estás enfermo forastero?' 'Ah, solo quieres conversar' 'Cuando tengas una aflicción, ven a verme' ).
+	frasesParaJugadoresDesconocidos := #('¿Estás enfermo forastero?' 'Ah, solo quieres conversar' 'Cuando tengas una aflicción, ven a verme' ).
 	frasesParaJugadoresPrometedores := #('Salud aventurero!!' 'Toma esta pócima que te hará crecer el pelo. Y cuando tengas una aflicción, ven a verme' ).
 	cantidadDeInteracciones := 0.
-	cantidadDeInteraccionesPorJugador := ((Dictionary new) add: (Hamilton->1); add: (Tirion->1); yourself).! !
+	cantidadDeInteraccionesPorJugador := ((Dictionary new) add: (Hamilton->1); yourself).! !
 
 
 !classDefinition: #Hamilton category: 'Ejercicio1-PNJ-Episodio2'!
@@ -112,7 +112,7 @@ hacerDesconocido
 hacerPrometedor
 	esPrometedorEnRiverWood := true.! !
 
-!Hamilton class methodsFor: 'as yet unclassified' stamp: 'FLM 9/28/2021 17:36:48'!
+!Hamilton class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -452,7 +452,7 @@ hacerDesconocido
 hacerPrometedor
 	esPrometedorEnRiverWood := true.! !
 
-!Tirion class methodsFor: 'as yet unclassified' stamp: 'FLM 9/28/2021 17:36:48'!
+!Tirion class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -470,7 +470,7 @@ DenotativeObject subclass: #TreborElGuardiaDeSkyrim
 
 !classDefinition: 'TreborElGuardiaDeSkyrim class' category: 'Ejercicio1-PNJ-Episodio2'!
 TreborElGuardiaDeSkyrim class
-	instanceVariableNames: 'frases frasesParaJugadoresPrometedores cantidadDeInteracciones cantidadDeInteraccionesPorJugador'!
+	instanceVariableNames: 'frasesparaJugadoresDesconocidos frasesParaJugadoresPrometedores cantidadDeInteracciones cantidadDeInteraccionesPorJugador'!
 
 !TreborElGuardiaDeSkyrim class methodsFor: 'interacciones' stamp: 'JMB 9/18/2021 11:24:55'!
 interactuar
@@ -514,20 +514,20 @@ recordarInteraccionCon: personajeJugable
 responderSegunCantidadDeInteracciones
 	^ frases at: (cantidadDeInteracciones min: frases size)! !
 
-!TreborElGuardiaDeSkyrim class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 16:45:06'!
+!TreborElGuardiaDeSkyrim class methodsFor: 'interacciones - privado' stamp: 'LEI 9/28/2021 21:21:42'!
 responderSegunCantidadDeInteraccionesCon: personajeJugable
 	|dialogoAElegir|
 	dialogoAElegir  := cantidadDeInteraccionesPorJugador at: personajeJugable ifAbsent: [1].
 	personajeJugable esJugadorPrometedorEnRiverWood ifTrue:[
-		^frasesParaJugadoresPrometedores at: (dialogoAElegir min: frases size) ]
-	ifFalse:[^ frases at: (dialogoAElegir min: frases size).] .! !
+		^frasesParaJugadoresPrometedores at: (dialogoAElegir min: frasesParaJugadoresPrometedores size) ]
+	ifFalse:[^ frasesparaJugadoresDesconocidos at: (dialogoAElegir min: frasesparaJugadoresDesconocidos size).] .! !
 
 
-!TreborElGuardiaDeSkyrim class methodsFor: 'as yet unclassified' stamp: 'FLM 9/28/2021 17:36:48'!
+!TreborElGuardiaDeSkyrim class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	frases := #('Hola forastero' '¿Todo bien?' '¿Algún problema?' ).
+	frasesparaJugadoresDesconocidos := #('Hola forastero' '¿Todo bien?' '¿Algún problema?' ).
 	frasesParaJugadoresPrometedores := #('Bienvenido aventurero!!' 'Espero que tengas una buena estadia en Riverwood' ).
 	cantidadDeInteracciones := 0.
 	cantidadDeInteraccionesPorJugador := ((Dictionary new) add: (Hamilton->0); add: (Tirion->0); yourself).! !
