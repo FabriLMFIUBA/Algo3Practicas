@@ -12,19 +12,14 @@ CarolinaLaCuranderaDeRiverwood class
 	instanceVariableNames: 'frasesParaJugadoresDesconocidos frasesParaJugadoresPrometedores cantidadDeInteracciones cantidadDeInteraccionesPorJugador'!
 
 !CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 16:58:05'!
-interactuar
-	self recordarInteraccion.
-	^ self responderSegunCantidadDeInteracciones! !
-
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 16:58:05'!
 interactuarCon: personajeJugableAInteractuar
 	
 	self recordarInteraccionCon:personajeJugableAInteractuar.
 	^ self responderSegunCantidadDeInteraccionesCon: personajeJugableAInteractuar.
 	! !
 
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 16:58:05'!
-olvidar	cantidadDeInteracciones  := 0.
+!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones' stamp: 'LEI 9/29/2021 22:59:20'!
+olvidar
 	cantidadDeInteraccionesPorJugador := Dictionary new.! !
 
 !CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 17:28:56'!
@@ -43,11 +38,6 @@ esCalificadoComoPrometedor: cantidadInteracciones
 	^ cantidadInteracciones >= (frasesParaJugadoresDesconocidos size).! !
 
 !CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 16:58:05'!
-recordarInteraccion
-	cantidadDeInteracciones := cantidadDeInteracciones + 1.
-! !
-
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 16:58:05'!
 recordarInteraccionCon: personajeJugable
 	|contieneRecuerdo|
 	contieneRecuerdo := cantidadDeInteraccionesPorJugador  includesKey: personajeJugable.
@@ -58,10 +48,6 @@ recordarInteraccionCon: personajeJugable
 	ifFalse:[
 		cantidadDeInteraccionesPorJugador at: personajeJugable put: 1.		].
 ! !
-
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 16:58:05'!
-responderSegunCantidadDeInteracciones
-	^ frases at: (cantidadDeInteracciones min: frases size)! !
 
 !CarolinaLaCuranderaDeRiverwood class methodsFor: 'interacciones - privado' stamp: 'LEI 9/28/2021 21:28:11'!
 responderSegunCantidadDeInteraccionesCon: personajeJugable
@@ -77,7 +63,7 @@ responderSegunCantidadDeInteraccionesCon: personajeJugable
 	^ frasesParaJugadoresDesconocidos at: (dialogoAElegir min: frasesParaJugadoresDesconocidos size).] .! !
 
 
-!CarolinaLaCuranderaDeRiverwood class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
+!CarolinaLaCuranderaDeRiverwood class methodsFor: 'as yet unclassified' stamp: 'LEI 9/29/2021 23:01:01'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -112,7 +98,7 @@ hacerDesconocido
 hacerPrometedor
 	esPrometedorEnRiverWood := true.! !
 
-!Hamilton class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
+!Hamilton class methodsFor: 'as yet unclassified' stamp: 'LEI 9/29/2021 23:01:01'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -452,7 +438,7 @@ hacerDesconocido
 hacerPrometedor
 	esPrometedorEnRiverWood := true.! !
 
-!Tirion class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
+!Tirion class methodsFor: 'as yet unclassified' stamp: 'LEI 9/29/2021 23:01:01'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -472,11 +458,6 @@ DenotativeObject subclass: #TreborElGuardiaDeSkyrim
 TreborElGuardiaDeSkyrim class
 	instanceVariableNames: 'frasesparaJugadoresDesconocidos frasesParaJugadoresPrometedores cantidadDeInteracciones cantidadDeInteraccionesPorJugador'!
 
-!TreborElGuardiaDeSkyrim class methodsFor: 'interacciones' stamp: 'JMB 9/18/2021 11:24:55'!
-interactuar
-	self recordarInteraccion.
-	^ self responderSegunCantidadDeInteracciones! !
-
 !TreborElGuardiaDeSkyrim class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 16:10:04'!
 interactuarCon: personajeJugableAInteractuar
 	
@@ -484,19 +465,14 @@ interactuarCon: personajeJugableAInteractuar
 	^ self responderSegunCantidadDeInteraccionesCon: personajeJugableAInteractuar.
 	! !
 
-!TreborElGuardiaDeSkyrim class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 16:12:54'!
-olvidar	cantidadDeInteracciones  := 0.
+!TreborElGuardiaDeSkyrim class methodsFor: 'interacciones' stamp: 'LEI 9/29/2021 22:52:14'!
+olvidar
 	cantidadDeInteraccionesPorJugador := Dictionary new.! !
 
 !TreborElGuardiaDeSkyrim class methodsFor: 'interacciones' stamp: 'FLM 9/28/2021 17:29:36'!
 olvidarJugador: personajeJugable
 	cantidadDeInteraccionesPorJugador at: personajeJugable put: 0.! !
 
-
-!TreborElGuardiaDeSkyrim class methodsFor: 'interacciones - privado' stamp: 'JMB 9/18/2021 11:25:28'!
-recordarInteraccion
-	cantidadDeInteracciones := cantidadDeInteracciones + 1.
-! !
 
 !TreborElGuardiaDeSkyrim class methodsFor: 'interacciones - privado' stamp: 'FLM 9/28/2021 16:27:25'!
 recordarInteraccionCon: personajeJugable
@@ -510,10 +486,6 @@ recordarInteraccionCon: personajeJugable
 		cantidadDeInteraccionesPorJugador at: personajeJugable put: 1.		].
 ! !
 
-!TreborElGuardiaDeSkyrim class methodsFor: 'interacciones - privado' stamp: 'JMB 9/18/2021 11:35:15'!
-responderSegunCantidadDeInteracciones
-	^ frases at: (cantidadDeInteracciones min: frases size)! !
-
 !TreborElGuardiaDeSkyrim class methodsFor: 'interacciones - privado' stamp: 'LEI 9/28/2021 21:21:42'!
 responderSegunCantidadDeInteraccionesCon: personajeJugable
 	|dialogoAElegir|
@@ -523,7 +495,7 @@ responderSegunCantidadDeInteraccionesCon: personajeJugable
 	ifFalse:[^ frasesparaJugadoresDesconocidos at: (dialogoAElegir min: frasesparaJugadoresDesconocidos size).] .! !
 
 
-!TreborElGuardiaDeSkyrim class methodsFor: 'as yet unclassified' stamp: 'LEI 9/28/2021 21:53:15'!
+!TreborElGuardiaDeSkyrim class methodsFor: 'as yet unclassified' stamp: 'LEI 9/29/2021 23:01:01'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
