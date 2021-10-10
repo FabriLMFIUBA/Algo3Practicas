@@ -211,26 +211,13 @@ addCustomerNamed: aName
 	
 	active add: aName ! !
 
-!CustomerBook methodsFor: 'customer management' stamp: 'NR 4/3/2019 10:14:26'!
+!CustomerBook methodsFor: 'customer management' stamp: 'LEI 10/10/2021 06:04:22'!
 removeCustomerNamed: aName 
- 
-	1 to: active size do: 
-	[ :index |
-		aName = (active at: index)
-			ifTrue: [
-				active removeAt: index.
-				^ aName 
-			] 
-	].
-
-	1 to: suspended size do: 	
-	[ :index |
-		aName = (suspended at: index)
-			ifTrue: [
-				suspended removeAt: index.
-				^ aName 
-			] 
-	].
+ 	
+	
+	
+	(self removeCustomer: aName fromCollection: active) | (self removeCustomer: aName fromCollection: suspended)  ifTrue:[^aName].	
+	
 	
 	^ NotFound signal.
 ! !
@@ -282,6 +269,26 @@ signalCustomerAlreadyExists
 signalCustomerNameCannotBeEmpty 
 
 	self error: self class customerCanNotBeEmptyErrorMessage ! !
+
+
+!CustomerBook methodsFor: 'private customer management' stamp: 'LEI 10/10/2021 06:03:20'!
+removeCustomer: customer fromCollection: collection
+
+|wasRemoved|
+
+wasRemoved := false.
+
+1 to: collection size do: 
+	[ :index |
+		customer = (collection at: index)
+			ifTrue: [
+				collection removeAt: index.
+				wasRemoved := true.
+				
+			] 
+	].
+
+^wasRemoved! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
