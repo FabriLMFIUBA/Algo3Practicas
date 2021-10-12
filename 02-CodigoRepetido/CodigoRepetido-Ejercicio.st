@@ -34,6 +34,52 @@ measureExecutionTime: codeBlock
 	
 	! !
 
+!CustomerBookTest methodsFor: 'test-private' stamp: 'LEI 10/10/2021 07:35:34'!
+measureExecutionTime: codeBlock lessThan: time
+	
+	| millisecondsBeforeRunning millisecondsAfterRunning |
+	
+	millisecondsBeforeRunning := Time millisecondClockValue * millisecond.
+	codeBlock value.
+	millisecondsAfterRunning := Time millisecondClockValue * millisecond.
+	
+	self assert: millisecondsAfterRunning-millisecondsBeforeRunning  < (time * millisecond)
+	
+	! !
+
+!CustomerBookTest methodsFor: 'test-private' stamp: 'LEI 10/12/2021 13:49:11'!
+operationToCustomer: customerName WantToAdd: boolAdd wantSuspend: boolSuspend wantToRemove: boolRemove
+	|customerBook activeCustomers suspendedCustomers totalCustomers|
+	
+	customerBook := CustomerBook new.
+	activeCustomers := 0.
+	suspendedCustomers  := 0.
+	totalCustomers := 0.
+		
+	boolAdd ifTrue:[	customerBook addCustomerNamed: customerName.
+				activeCustomers := activeCustomers  + 1.
+				totalCustomers := totalCustomers + 1.
+				].
+	
+	boolSuspend ifTrue:[customerBook suspendCustomerNamed: customerName. 
+					suspendedCustomers:= suspendedCustomers +1.
+					activeCustomers := activeCustomers -1].
+	
+	boolRemove ifTrue:[customerBook removeCustomerNamed: customerName.
+					totalCustomers := totalCustomers - 1.
+					].
+	
+	self assert: activeCustomers equals: customerBook numberOfActiveCustomers.
+	self assert: suspendedCustomers equals: customerBook numberOfSuspendedCustomers.
+	self assert: totalCustomers equals: customerBook numberOfCustomers.
+	
+	
+	^customerBook
+	
+	
+	
+ ! !
+
 !CustomerBookTest methodsFor: 'test-private' stamp: 'LEI 10/8/2021 17:37:11'!
 try:thisCodeBlock catch: thatError do:	 manageError
 	
@@ -45,38 +91,34 @@ try:thisCodeBlock catch: thatError do:	 manageError
 		manageError value:anError]! !
 
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/8/2021 16:34:34'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/10/2021 07:58:01'!
 test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 
-	| customerBook totalMilliSeconds |
+	| customerBook |
 	
 	customerBook := CustomerBook new.
 	
 	
-	totalMilliSeconds := self measureExecutionTime:  [customerBook addCustomerNamed: 'John Lennon'].
+	
+	self measureExecutionTime: [customerBook addCustomerNamed: 'John Lennon']  lessThan:50 .
 	
 	
-	self assert: totalMilliSeconds < (50 * millisecond).
 	
 	
 ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/8/2021 16:34:39'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/10/2021 08:00:22'!
 test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 
-	| customerBook totalMilliseconds paulMcCartney |
+	| customerBook paulMcCartney |
 	
 	customerBook := CustomerBook new.
 	paulMcCartney := 'Paul McCartney'.
 	
 	customerBook addCustomerNamed: paulMcCartney.
 	  
-	totalMilliseconds := self measureExecutionTime:  [customerBook removeCustomerNamed: paulMcCartney].
-	
-	
-	
-	self assert: totalMilliseconds < (100 * millisecond)
-	
+	self measureExecutionTime:  [customerBook removeCustomerNamed: paulMcCartney] lessThan: 100.
+
 ! !
 
 !CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/8/2021 18:16:58'!
@@ -111,20 +153,19 @@ test04CanNotRemoveAnInvalidCustomer
 			self assert: customerBook numberOfCustomers = 1.
 			self assert: (customerBook includesCustomerNamed: johnLennon)] ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'NR 4/3/2019 10:50:25'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/12/2021 13:46:48'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
 	
-	customerBook := CustomerBook new.
+	
 	paulMcCartney := 'Paul McCartney'.
 	
-	customerBook addCustomerNamed: paulMcCartney.
-	customerBook suspendCustomerNamed: paulMcCartney.
 	
-	self assert: 0 equals: customerBook numberOfActiveCustomers.
-	self assert: 1 equals: customerBook numberOfSuspendedCustomers.
-	self assert: 1 equals: customerBook numberOfCustomers.
+	
+	customerBook := self operationToCustomer: 'Paul McCartney' WantToAdd:true  wantSuspend:true  wantToRemove: false.
+		
+	
 	self assert: (customerBook includesCustomerNamed: paulMcCartney).
 	
 
