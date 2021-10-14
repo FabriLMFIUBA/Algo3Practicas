@@ -21,24 +21,24 @@ TestCase subclass: #CustomerBookTest
 	poolDictionaries: ''
 	category: 'CodigoRepetido-Ejercicio'!
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/12/2021 16:30:38'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'FLM 10/14/2021 15:27:11'!
 test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 	| customerBook |
 	customerBook := CustomerBook new.
-	self assert:  (self measureExecutionTime: [customerBook addCustomerNamed: 'John Lennon']  isLessThan:50) .
+	self assert:  (self measureIfExecutionTimeOf: [customerBook addCustomerNamed: 'John Lennon']  isLessThan:50) .
 
 ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/13/2021 18:22:14'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'FLM 10/14/2021 15:30:00'!
 test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 
 
 	| customerBook paulMcCartney |
 	
 	paulMcCartney := 'Paul McCartney'.
-	customerBook := self createCustomerBookWithName: paulMcCartney.
+	customerBook := self createCustomerBookAndAddCustomerNamed: paulMcCartney.
 
-	self assert: ( self measureExecutionTime:  [customerBook removeCustomerNamed: paulMcCartney] isLessThan: 100).
+	self assert: ( self measureIfExecutionTimeOf:  [customerBook removeCustomerNamed: paulMcCartney] isLessThan: 100).
 ! !
 
 !CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/13/2021 18:47:54'!
@@ -56,21 +56,21 @@ test03CanNotAddACustomerWithEmptyName
 	
 	! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/14/2021 15:18:47'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'FLM 10/14/2021 15:30:00'!
 test04CanNotRemoveAnInvalidCustomer
 	
 	| customerBook johnLennon |
 			
 	
 	johnLennon := 'John Lennon'.
-	customerBook := self createCustomerBookWithName: johnLennon.
+	customerBook := self createCustomerBookAndAddCustomerNamed: johnLennon.
 	
 	self try: [ customerBook removeCustomerNamed: 'Paul McCartney'.] 
 	      catch: NotFound  
 	      do: [ :anError | 				self verifyInCustomerBook: customerBook IncludesNameCustomer: johnLennon totalCustomersExpected:1 
 			] ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/14/2021 15:16:35'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'FLM 10/14/2021 15:31:57'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
@@ -78,42 +78,42 @@ test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 	
 	
 	paulMcCartney := 'Paul McCartney'.
-	customerBook:= self createCustomerBookWithName: paulMcCartney.
+	customerBook:= self createCustomerBookAndAddCustomerNamed: paulMcCartney.
 	customerBook operationToCustomer: paulMcCartney wantToSuspend: true  wantToRemove: false. 
 	
 
 	self verifyInCustomerBook: customerBook expectedNumberActiveCustomers: 0 expectedNumberSuspendedCustomers: 1  totalNumberCustomers: 1. 
-	self verifyIfCustomerBook: customerBook customerNamed: paulMcCartney  shouldBeIncluded: true.
+	self verifyIfInCustomerBook: customerBook customerNamed: paulMcCartney  shouldBeIncluded: true.
 
 ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/14/2021 15:16:35'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'FLM 10/14/2021 15:31:57'!
 test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
 	
 	
-	paulMcCartney := 'Paul McCartney'.	customerBook := self createCustomerBookWithName: paulMcCartney.
+	paulMcCartney := 'Paul McCartney'.	customerBook := self createCustomerBookAndAddCustomerNamed: paulMcCartney.
 	
 	customerBook operationToCustomer: paulMcCartney wantToSuspend: true  wantToRemove: true.
 	
 	
 	self verifyInCustomerBook: customerBook expectedNumberActiveCustomers: 0 expectedNumberSuspendedCustomers: 0  totalNumberCustomers: 0. 
 
-	self verifyIfCustomerBook: customerBook customerNamed: paulMcCartney shouldBeIncluded: false .
+	self verifyIfInCustomerBook: customerBook customerNamed: paulMcCartney shouldBeIncluded: false .
 
 
 	
 ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/14/2021 15:18:47'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'FLM 10/14/2021 15:30:00'!
 test07CanNotSuspendAnInvalidCustomer
 	
 	| customerBook johnLennon |
 			
 	
 	johnLennon := 'John Lennon'.
-	customerBook :=  self createCustomerBookWithName: johnLennon.
+	customerBook :=  self createCustomerBookAndAddCustomerNamed: johnLennon.
 
 	self try: [ customerBook suspendCustomerNamed: 'Ringo Starr'] 
 	      catch: CantSuspend  
@@ -123,14 +123,14 @@ test07CanNotSuspendAnInvalidCustomer
 
 ! !
 
-!CustomerBookTest methodsFor: 'tests' stamp: 'LEI 10/14/2021 15:18:47'!
+!CustomerBookTest methodsFor: 'tests' stamp: 'FLM 10/14/2021 15:30:00'!
 test08CanNotSuspendAnAlreadySuspendedCustomer
 	
 	| customerBook johnLennon |
 			
 	
 	johnLennon := 'John Lennon'.
-	customerBook := self createCustomerBookWithName: johnLennon.
+	customerBook := self createCustomerBookAndAddCustomerNamed: johnLennon.
 	
 	customerBook suspendCustomerNamed: johnLennon.
 
@@ -143,8 +143,8 @@ test08CanNotSuspendAnAlreadySuspendedCustomer
 ! !
 
 
-!CustomerBookTest methodsFor: 'test-private' stamp: 'LEI 10/13/2021 17:43:15'!
-createCustomerBookWithName: nameCustomerBook
+!CustomerBookTest methodsFor: 'test-private' stamp: 'FLM 10/14/2021 15:30:00'!
+createCustomerBookAndAddCustomerNamed: nameCustomerBook
 	|customerBook|
 	
 	customerBook := CustomerBook new.
@@ -152,8 +152,8 @@ createCustomerBookWithName: nameCustomerBook
 	
 	^customerBook.! !
 
-!CustomerBookTest methodsFor: 'test-private' stamp: 'FLM 10/12/2021 14:39:37'!
-measureExecutionTime: codeBlock isLessThan: time
+!CustomerBookTest methodsFor: 'test-private' stamp: 'FLM 10/14/2021 15:27:11'!
+measureIfExecutionTimeOf: codeBlock isLessThan: time
 	
 	| millisecondsBeforeRunning millisecondsAfterRunning |
 	
@@ -175,8 +175,8 @@ try:thisCodeBlock catch: thatError do:	 manageError
 	do: [:anError|
 		manageError value:anError]! !
 
-!CustomerBookTest methodsFor: 'test-private' stamp: 'LEI 10/14/2021 15:14:58'!
-verifyIfCustomerBook: customerBook customerNamed: customerName shouldBeIncluded: expectedToInclude. 
+!CustomerBookTest methodsFor: 'test-private' stamp: 'FLM 10/14/2021 15:31:57'!
+verifyIfInCustomerBook: customerBook customerNamed: customerName shouldBeIncluded: expectedToInclude. 
 
 	expectedToInclude ifTrue:[self assert: (customerBook includesCustomerNamed: customerName)]
 	ifFalse:[self deny: (customerBook includesCustomerNamed: customerName)].! !
