@@ -516,6 +516,38 @@ with: aValue
 	^self new initalizeWith: aValue! !
 
 
+!classDefinition: #EnterosNegativos category: 'Numeros-Parte2-Ejercicio'!
+Entero subclass: #EnterosNegativos
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros-Parte2-Ejercicio'!
+
+
+!classDefinition: #EnterosPositivosMayoresAuno category: 'Numeros-Parte2-Ejercicio'!
+Entero subclass: #EnterosPositivosMayoresAuno
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros-Parte2-Ejercicio'!
+
+
+!classDefinition: #NumeroCero category: 'Numeros-Parte2-Ejercicio'!
+Entero subclass: #NumeroCero
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros-Parte2-Ejercicio'!
+
+
+!classDefinition: #NumeroUno category: 'Numeros-Parte2-Ejercicio'!
+Entero subclass: #NumeroUno
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros-Parte2-Ejercicio'!
+
+
 !classDefinition: #Fraccion category: 'Numeros-Parte2-Ejercicio'!
 Numero subclass: #Fraccion
 	instanceVariableNames: 'numerator denominator'
@@ -538,15 +570,11 @@ Numero subclass: #Fraccion
 	^aSubtrahend substractToAFraccion: self.
 ! !
 
-!Fraccion methodsFor: 'arithmetic operations' stamp: 'LEI 10/22/2021 08:23:15'!
+!Fraccion methodsFor: 'arithmetic operations' stamp: 'LEI 10/22/2021 16:29:29'!
 / aDivisor 
-	
-	(aDivisor isKindOf: Fraccion) ifTrue:[
-	^(numerator * aDivisor denominator) / (denominator * aDivisor numerator)
-	].
-	
-	^(numerator ) / (denominator * aDivisor value)
 
+	^aDivisor divideAFraccion: self.
+	
 	! !
 
 
