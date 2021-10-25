@@ -390,25 +390,29 @@ integerValue
 / aDivisor 	^ aDivisor divideAnEntero: self.
 	! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'HAW 9/24/2018 08:47:50'!
-fibonacci
-
-	| one two |
+!Entero methodsFor: 'arithmetic operations' stamp: 'LEI 10/25/2021 08:12:11'!
+fibonacci	|typeOfNumber|
 	
-	one := Entero with: 1.
-	two := Entero with: 2.
-	
-	self isNegative ifTrue: [self error: Entero negativeFibonacciErrorDescription ].	
-	(self isZero or: [self isOne]) ifTrue: [^one].
-	
-	^ (self - one) fibonacci + (self - two) fibonacci
-		! !
+	typeOfNumber := self getSignedNumberClass. 
+	^typeOfNumber beAddedFibonacci! !
 
 
 !Entero methodsFor: 'arithmetic operations - private' stamp: 'HernanWilkinson 5/7/2016 21:55'!
 // aDivisor 
 	
 	^self class with: value // aDivisor integerValue! !
+
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'LEI 10/25/2021 07:51:30'!
+beAddedFibonacci
+
+	self subclassResponsibility ! !
+
+!Entero methodsFor: 'arithmetic operations - private' stamp: 'LEI 10/25/2021 08:10:11'!
+getSignedNumberClass
+	"comment stating purpose of message"
+
+	self isNegative ifTrue: [^ Negativo with:self integerValue ].
+	^Positivo with: self integerValue .! !
 
 !Entero methodsFor: 'arithmetic operations - private' stamp: 'HernanWilkinson 5/7/2016 21:00'!
 greatestCommonDivisorWith: anEntero 
@@ -514,6 +518,42 @@ with: aValue
 	aValue isInteger ifFalse: [  self error: 'aValue debe ser anInteger' ].
 	
 	^self new initalizeWith: aValue! !
+
+
+!classDefinition: #Negativo category: 'Numeros-Parte2-Ejercicio'!
+Entero subclass: #Negativo
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros-Parte2-Ejercicio'!
+
+!Negativo methodsFor: 'as yet unclassified' stamp: 'LEI 10/25/2021 07:51:30'!
+beAddedFibonacci
+
+self error: Entero negativeFibonacciErrorDescription! !
+
+
+!classDefinition: #Positivo category: 'Numeros-Parte2-Ejercicio'!
+Entero subclass: #Positivo
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros-Parte2-Ejercicio'!
+
+!Positivo methodsFor: 'as yet unclassified' stamp: 'LEI 10/25/2021 07:50:58'!
+beAddedFibonacci
+
+|one two|
+
+
+	one := Entero with: 1.
+	two := Entero with: 2.
+
+
+	(self isZero or: [self isOne]) ifTrue: [^one].
+	
+	^ (self - one) fibonacci + (self - two) fibonacci
+! !
 
 
 !classDefinition: #Fraccion category: 'Numeros-Parte2-Ejercicio'!
@@ -665,20 +705,17 @@ substractToAFraccion: aMinuend
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'NR 9/23/2018 23:45:19'!
+!Fraccion class methodsFor: 'intance creation' stamp: 'LEI 10/25/2021 08:14:23'!
 with: aDividend over: aDivisor
 
 	| greatestCommonDivisor numerator denominator |
-	
 	aDivisor isZero ifTrue: [ self error: self canNotDivideByZeroErrorDescription ].
 	aDividend isZero ifTrue: [ ^aDividend ].
-	
 	aDivisor isNegative ifTrue:[ ^aDividend negated / aDivisor negated].
-	
 	greatestCommonDivisor := aDividend greatestCommonDivisorWith: aDivisor. 
 	numerator := aDividend // greatestCommonDivisor.
 	denominator := aDivisor // greatestCommonDivisor.
-	
+
 	denominator isOne ifTrue: [ ^numerator ].
 
 	^self new initializeWith: numerator over: denominator
