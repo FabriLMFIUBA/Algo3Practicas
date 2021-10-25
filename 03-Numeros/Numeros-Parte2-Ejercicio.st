@@ -372,14 +372,14 @@ integerValue
 	^value! !
 
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'FLM 10/22/2021 15:29:04'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'LEI 10/24/2021 22:10:14'!
 * aMultiplier 
-	^aMultiplier  MultipliedByAnEntero: self.
+	^aMultiplier  multipliedByAnEntero: self.
 	! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'FLM 10/22/2021 15:15:15'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'LEI 10/24/2021 22:09:40'!
 + anAdder 
-		^ anAdder AddAnEntero: self.
+		^ anAdder addAnEntero: self.
 	! !
 
 !Entero methodsFor: 'arithmetic operations' stamp: 'FLM 10/22/2021 16:10:23'!
@@ -433,17 +433,17 @@ initalizeWith: aValue
 	value := aValue! !
 
 
-!Entero methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 15:14:59'!
-AddAnEntero: anAugend
+!Entero methodsFor: 'operations with Entero' stamp: 'LEI 10/24/2021 22:09:40'!
+addAnEntero: anAugend
 	^Entero with: ((anAugend integerValue)  + (self integerValue)).! !
-
-!Entero methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 15:25:03'!
-MultipliedByAnEntero: aMultiplicand
-	^self class with: ((aMultiplicand integerValue)* (self integerValue))! !
 
 !Entero methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 15:37:15'!
 divideAnEntero: aDividend
 	^Fraccion with: aDividend over: self.! !
+
+!Entero methodsFor: 'operations with Entero' stamp: 'LEI 10/24/2021 22:10:14'!
+multipliedByAnEntero: aMultiplicand
+	^self class with: ((aMultiplicand integerValue)* (self integerValue))! !
 
 !Entero methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 16:07:01'!
 substractToAnEntero: aMinuend
@@ -514,38 +514,6 @@ with: aValue
 	aValue isInteger ifFalse: [  self error: 'aValue debe ser anInteger' ].
 	
 	^self new initalizeWith: aValue! !
-
-
-!classDefinition: #EnterosNegativos category: 'Numeros-Parte2-Ejercicio'!
-Entero subclass: #EnterosNegativos
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Numeros-Parte2-Ejercicio'!
-
-
-!classDefinition: #EnterosPositivosMayoresAuno category: 'Numeros-Parte2-Ejercicio'!
-Entero subclass: #EnterosPositivosMayoresAuno
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Numeros-Parte2-Ejercicio'!
-
-
-!classDefinition: #NumeroCero category: 'Numeros-Parte2-Ejercicio'!
-Entero subclass: #NumeroCero
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Numeros-Parte2-Ejercicio'!
-
-
-!classDefinition: #NumeroUno category: 'Numeros-Parte2-Ejercicio'!
-Entero subclass: #NumeroUno
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Numeros-Parte2-Ejercicio'!
 
 
 !classDefinition: #Fraccion category: 'Numeros-Parte2-Ejercicio'!
@@ -636,8 +604,8 @@ printOn: aStream
 		print: denominator ! !
 
 
-!Fraccion methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 15:28:17'!
-AddAnEntero: anAugend
+!Fraccion methodsFor: 'operations with Entero' stamp: 'LEI 10/24/2021 22:10:45'!
+addAnEntero: anAugend
 	|newNumerator newDenominator| 
 	newNumerator := ((anAugend) * ( self denominator)) + (self numerator).
 	newDenominator :=  self denominator.
@@ -645,17 +613,17 @@ AddAnEntero: anAugend
 	^newNumerator / newDenominator
 ! !
 
-!Fraccion methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 15:30:35'!
-MultipliedByAnEntero: aMultiplicand
+!Fraccion methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 15:38:51'!
+divideAnEntero: aDividend
+	^self class with: (aDividend * self denominator ) over: (self numerator)! !
+
+!Fraccion methodsFor: 'operations with Entero' stamp: 'LEI 10/24/2021 22:10:56'!
+multipliedByAnEntero: aMultiplicand
 	|newNumerator newDenominator|
 	newNumerator := (aMultiplicand )* (self numerator ).
 	newDenominator :=  self denominator.
 	
 	^newNumerator / newDenominator! !
-
-!Fraccion methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 15:38:51'!
-divideAnEntero: aDividend
-	^self class with: (aDividend * self denominator ) over: (self numerator)! !
 
 !Fraccion methodsFor: 'operations with Entero' stamp: 'FLM 10/22/2021 16:09:08'!
 substractToAnEntero: aMinuend
