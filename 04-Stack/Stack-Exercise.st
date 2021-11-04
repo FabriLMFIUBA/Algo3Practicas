@@ -1,57 +1,57 @@
-!classDefinition: #OOStackTest category: 'Stack-Exercise'!
-TestCase subclass: #OOStackTest
+!classDefinition: #OODynamicStackTest category: 'Stack-Exercise'!
+TestCase subclass: #OODynamicStackTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStackTest methodsFor: 'test' stamp: 'HernanWilkinson 5/7/2012 11:30'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:19'!
 test01StackShouldBeEmptyWhenCreated
 
 	| stack |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	
 	self assert: stack isEmpty! !
 
-!OOStackTest methodsFor: 'test' stamp: 'NR 5/13/2020 13:29:55'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:23'!
 test02PushAddElementsToTheStack
 
 	| stack |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	stack push: 'something'.
 	
 	self deny: stack isEmpty! !
 
-!OOStackTest methodsFor: 'test' stamp: 'NR 5/13/2020 13:30:01'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:28'!
 test03PopRemovesElementsFromTheStack
 
 	| stack |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	stack push: 'something'.
 	stack pop.
 	
 	self assert: stack isEmpty! !
 
-!OOStackTest methodsFor: 'test' stamp: 'NR 5/13/2020 13:30:09'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:33'!
 test04PopReturnsLastPushedObject
 
 	| stack pushedObject |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	pushedObject := 'something'.
 	stack push: pushedObject.
 	
 	self assert: stack pop = pushedObject! !
 
-!OOStackTest methodsFor: 'test' stamp: 'NR 5/13/2020 13:30:48'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:39'!
 test05StackBehavesLIFO
 
 	| stack firstPushedObject secondPushedObject |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	firstPushedObject := 'first'.
 	secondPushedObject := 'second'.
 	
@@ -63,12 +63,12 @@ test05StackBehavesLIFO
 	self assert: stack isEmpty 
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'NR 5/13/2020 13:30:20'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:43'!
 test06TopReturnsLastPushedObject
 
 	| stack pushedObject |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	pushedObject := 'something'.
 	
 	stack push: pushedObject.
@@ -76,12 +76,12 @@ test06TopReturnsLastPushedObject
 	self assert: stack top = pushedObject.
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'NR 5/13/2020 13:30:24'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:48'!
 test07TopDoesNotRemoveObjectFromStack
 
 	| stack pushedObject |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	pushedObject := 'something'.
 	
 	stack push: pushedObject.
@@ -91,12 +91,12 @@ test07TopDoesNotRemoveObjectFromStack
 	self assert: stack size = 1.
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'HAW 4/14/2017 22:48:26'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:53'!
 test08CanNotPopWhenThereAreNoObjectsInTheStack
 
 	| stack  |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	self
 		should: [ stack pop ]
 		raise: Error - MessageNotUnderstood 
@@ -105,12 +105,12 @@ test08CanNotPopWhenThereAreNoObjectsInTheStack
 		
 ! !
 
-!OOStackTest methodsFor: 'test' stamp: 'NR 5/13/2020 13:30:31'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:03:57'!
 test09CanNotPopWhenThereAreNoObjectsInTheStackAndTheStackHadObjects
 
 	| stack  |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	stack push: 'something'.
 	stack pop.
 	
@@ -122,17 +122,217 @@ test09CanNotPopWhenThereAreNoObjectsInTheStackAndTheStackHadObjects
 		
 ! !
 
-!OOStackTest methodsFor: 'test' stamp: 'HAW 4/14/2017 22:48:44'!
+!OODynamicStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:04:01'!
 test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 	| stack  |
 	
-	stack := OOStack new.
+	stack := DynamicStack new.
 	self
 		should: [ stack top ]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [ :anError |
 			self assert: anError messageText = OOStack stackEmptyErrorDescription ]
+		
+! !
+
+
+!classDefinition: #OOStaticStackTest category: 'Stack-Exercise'!
+TestCase subclass: #OOStaticStackTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:50:26'!
+test01StackShouldBeEmptyWhenCreated
+
+	| stack |
+	
+	stack := StaticStack withMaxSize: 10.
+	
+	self assert: stack isEmpty! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:04'!
+test02PushAddElementsToTheStack
+
+	| stack |
+	
+	stack := StaticStack withMaxSize: 10.
+	stack push: 'something'.
+	
+	self deny: stack isEmpty! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:10'!
+test03PopRemovesElementsFromTheStack
+
+	| stack |
+	
+	stack := StaticStack withMaxSize: 10.
+	stack push: 'something'.
+	stack pop.
+	
+	self assert: stack isEmpty! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:18'!
+test04PopReturnsLastPushedObject
+
+	| stack pushedObject |
+	
+	stack := StaticStack withMaxSize: 10.
+	pushedObject := 'something'.
+	stack push: pushedObject.
+	
+	self assert: stack pop = pushedObject! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:24'!
+test05StackBehavesLIFO
+
+	| stack firstPushedObject secondPushedObject |
+	
+	stack := StaticStack withMaxSize: 10.
+	firstPushedObject := 'first'.
+	secondPushedObject := 'second'.
+	
+	stack push: firstPushedObject.
+	stack push: secondPushedObject.
+	
+	self assert: stack pop = secondPushedObject.
+	self assert: stack pop = firstPushedObject.
+	self assert: stack isEmpty 
+	! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:31'!
+test06TopReturnsLastPushedObject
+
+	| stack pushedObject |
+	
+	stack := StaticStack withMaxSize: 10.
+	pushedObject := 'something'.
+	
+	stack push: pushedObject.
+	
+	self assert: stack top = pushedObject.
+	! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:37'!
+test07TopDoesNotRemoveObjectFromStack
+
+	| stack pushedObject |
+	
+	stack := StaticStack withMaxSize: 10.
+	pushedObject := 'something'.
+	
+	stack push: pushedObject.
+	
+	self assert: stack size = 1.
+	stack top.
+	self assert: stack size = 1.
+	! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:45'!
+test08CanNotPopWhenThereAreNoObjectsInTheStack
+
+	| stack  |
+	
+	stack := StaticStack withMaxSize: 10.
+	self
+		should: [ stack pop ]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = OOStack stackEmptyErrorDescription ]
+		
+! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:49'!
+test09CanNotPopWhenThereAreNoObjectsInTheStackAndTheStackHadObjects
+
+	| stack  |
+	
+	stack := StaticStack withMaxSize: 10.
+	stack push: 'something'.
+	stack pop.
+	
+	self
+		should: [ stack pop ]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = OOStack stackEmptyErrorDescription ]
+		
+! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:51:53'!
+test10CanNotTopWhenThereAreNoObjectsInTheStack
+
+	| stack  |
+	
+	stack := StaticStack withMaxSize: 10.
+	self
+		should: [ stack top ]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = OOStack stackEmptyErrorDescription ]
+		
+! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:54:06'!
+test11CantPushWhenStackIsFull
+
+	| stack  |
+	
+	stack := StaticStack withMaxSize: 2.
+	
+	stack push: 10.
+	stack push: 20.
+	
+	
+	self
+		should: [ stack push: 30. ]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = StaticStack stackLimitReachedErrorDescription ]
+		
+! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:58:28'!
+test12CantBeCreatedWhenDesiredSizeIsNotAnInteger
+
+	| stack  |
+	
+	
+	self
+		should: [ stack:= StaticStack withMaxSize: 'a']
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = StaticStack invalidNumberForStackSizeErrorDescription ]
+		
+! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:59:44'!
+test13CantBeCreatedWithMaxSize0
+
+	| stack  |
+	
+	
+	self
+		should: [ stack:= StaticStack withMaxSize: 0]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = StaticStack nonPositiveStackSizeErrorDescription ]
+		
+! !
+
+!OOStaticStackTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:00:11'!
+test14CantBeCreatedWithMaxSizeBeingNegative
+
+	| stack  |
+	
+	
+	self
+		should: [ stack:= StaticStack withMaxSize: -1]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = StaticStack nonPositiveStackSizeErrorDescription ]
 		
 ! !
 
@@ -167,56 +367,56 @@ aStack push: fourth.
 ! !
 
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:25:41'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test01SFBPdoesntMatchWithAnySentenceInEmptyStack
 	
 	|sentencesFounded|
 	
-	sentencesFounded := sentenceFinderTest prefixToSearch: Wint inStack: stackTest.
+	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wint inStack: stackTest.
 	
 	self assert: sentencesFounded size = 0.
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:42:01'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test02SFBPdoesntFindAnySentencesWithAmatchingPrefixInStackWithOnlyOneSentence
 	
 	|sentencesFounded|
 	
 	
 	stackTest push: WinterIsHere.
-	sentencesFounded := sentenceFinderTest prefixToSearch: Wont inStack: stackTest.
+	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wont inStack: stackTest.
 	
 	
 	self assert: sentencesFounded size = 0
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:42:19'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test03SFBPgotOnlyOneMatchWithCorrectPrefixInStackWithOnlyOneSentence
 	
 	|sentencesFounded|
 	
 	
 	stackTest push: WinterIsHere.
-	sentencesFounded := sentenceFinderTest prefixToSearch: Wint inStack: stackTest.
+	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wint inStack: stackTest.
 	
 	
 	self assertThatCollection: sentencesFounded onlyContains: WinterIsHere.
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:39:05'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test04SFBSdoesntFindAnySentencesWithAMatchingPrefixInStackWithMultipleSentences
 	
  	|sentencesFounded|
 	self fillStack: stackTest with: winterIsComing  with: winningIsEverything  with: TheWindsOfWinter  with: WinterIsHere.
 	
-	sentencesFounded := sentenceFinderTest prefixToSearch: Wont inStack: stackTest.
+	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wont inStack: stackTest.
 	
 	self assert: sentencesFounded size = 0.
 
 	
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:43:23'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test05SFBPgotOnlyOneMatchWithCorrectPrefixInStackWithMultipleSentences
 	
 
@@ -224,25 +424,25 @@ test05SFBPgotOnlyOneMatchWithCorrectPrefixInStackWithMultipleSentences
 	
 	self fillStack: stackTest with: winterIsComing  with: winningIsEverything  with: TheWindsOfWinter  with: WinterIsHere.
 	
-	sentencesFounded := sentenceFinderTest prefixToSearch: Wint inStack: stackTest.
+	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wint inStack: stackTest.
 	
 	self assertThatCollection: sentencesFounded  onlyContains: WinterIsHere 
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:46:11'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test06SFBSfoundedMultipleSentencesWithMatchingPrefixInStackWithMultipleSentences
 	
  	|sentencesFounded|
 	self fillStack: stackTest with: winterIsComing  with: winningIsEverything  with: TheWindsOfWinter  with: WinterIsHere.
 	
-	sentencesFounded := sentenceFinderTest prefixToSearch: win inStack: stackTest.
+	sentencesFounded := sentenceFinderTest sentencesWithPrefix: win inStack: stackTest.
 	
 	self assert: sentencesFounded size = 2.
 	self assertThatCollection: sentencesFounded FirstElementIs: winningIsEverything  andSecondElementIs: winterIsComing 
 	
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:05:03'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test07CanNotFindWithPrefixWithSpace
 	
 	
@@ -250,7 +450,7 @@ test07CanNotFindWithPrefixWithSpace
 	
 	
 	self
-		should: [ sentenceFinderTest prefixToSearch: prefixWithSpace inStack: stackTest ]
+		should: [ sentenceFinderTest sentencesWithPrefix: prefixWithSpace inStack: stackTest ]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [ :anError |
 			self assert: anError messageText = SentenceFinderByPrefix ErrorPrefixHasSpace ]
@@ -258,7 +458,7 @@ test07CanNotFindWithPrefixWithSpace
 	 .
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'LEI 11/2/2021 16:45:06'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
 test08CanNotFindWithEmptyPrefix
 	
 	
@@ -267,18 +467,18 @@ test08CanNotFindWithEmptyPrefix
 	
 	
 	self
-		should: [ sentenceFinderTest prefixToSearch: EmptyPrefix  inStack: stackTest ]
+		should: [ sentenceFinderTest sentencesWithPrefix: EmptyPrefix  inStack: stackTest ]
 		raise: Error - MessageNotUnderstood 
 		withExceptionDo: [ :anError |
 			self assert: anError messageText = SentenceFinderByPrefix ErrorPrefixIsEmpty ]
 	! !
 
 
-!SentenceFinderByPrefixTest methodsFor: 'setUp' stamp: 'LEI 11/2/2021 15:58:50'!
+!SentenceFinderByPrefixTest methodsFor: 'setUp' stamp: 'FLM 11/4/2021 15:04:35'!
 setUp
 
 	
-	stackTest := OOStack new.
+	stackTest := DynamicStack new.
 	sentenceFinderTest := SentenceFinderByPrefix new.
 	
 	winterIsComing := 'winter is Coming'.
@@ -294,72 +494,72 @@ setUp
 	prefixWithSpace := 'Win t'! !
 
 
-!classDefinition: #Node category: 'Stack-Exercise'!
-Object subclass: #Node
+!classDefinition: #Container category: 'Stack-Exercise'!
+Object subclass: #Container
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Node methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:26:19'!
+!Container methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:26:19'!
 getValue
 	self subclassResponsibility ! !
 
-!Node methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:31:32'!
+!Container methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:31:32'!
 setValue:elementValue
 	self subclassResponsibility ! !
 
 
-!classDefinition: #NodoAveilable category: 'Stack-Exercise'!
-Node subclass: #NodoAveilable
+!classDefinition: #NullContainer category: 'Stack-Exercise'!
+Container subclass: #NullContainer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!NullContainer methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:28:57'!
+getValue
+
+	self error: (OOStack stackEmptyErrorDescription).! !
+
+!NullContainer methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:31:45'!
+setValue:elementValue
+
+	self error: (OOStack stackEmptyErrorDescription).! !
+
+
+!classDefinition: #OpenContainer category: 'Stack-Exercise'!
+Container subclass: #OpenContainer
 	instanceVariableNames: 'value'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!NodoAveilable methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:29:41'!
+!OpenContainer methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:29:41'!
 getValue
 	^value! !
 
-!NodoAveilable methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:35:29'!
+!OpenContainer methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:35:29'!
 initialice: valueElement.
 	self setValue: valueElement.! !
 
-!NodoAveilable methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:32:24'!
+!OpenContainer methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:32:24'!
 setValue: valueElement
 	value := valueElement.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'NodoAveilable class' category: 'Stack-Exercise'!
-NodoAveilable class
+!classDefinition: 'OpenContainer class' category: 'Stack-Exercise'!
+OpenContainer class
 	instanceVariableNames: ''!
 
-!NodoAveilable class methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:36:33'!
+!OpenContainer class methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:36:33'!
 createWith: elementValue.
 
 	^self new initialice: elementValue
 	
 	
 	! !
-
-
-!classDefinition: #NullNode category: 'Stack-Exercise'!
-Node subclass: #NullNode
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-!NullNode methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:28:57'!
-getValue
-
-	self error: (OOStack stackEmptyErrorDescription).! !
-
-!NullNode methodsFor: 'as yet unclassified' stamp: 'LEI 11/1/2021 20:31:45'!
-setValue:elementValue
-
-	self error: (OOStack stackEmptyErrorDescription).! !
 
 
 !classDefinition: #OOStack category: 'Stack-Exercise'!
@@ -369,17 +569,9 @@ Object subclass: #OOStack
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'initialization' stamp: 'LEI 11/1/2021 20:43:49'!
-initialize
-	collection := OrderedCollection  new.
-	collection addFirst: (NullNode new).
-
-	! !
-
-
-!OOStack methodsFor: 'accessing' stamp: 'LEI 11/2/2021 01:17:35'!
+!OOStack methodsFor: 'accessing' stamp: 'FLM 11/4/2021 15:06:21'!
 size
-	^ collection  size - 1.! !
+	^ (collection size) - 1.! !
 
 !OOStack methodsFor: 'accessing' stamp: 'LEI 11/1/2021 20:41:40'!
 top
@@ -392,11 +584,9 @@ isEmpty
 	^ self size = 0.! !
 
 
-!OOStack methodsFor: 'adding' stamp: 'LEI 11/1/2021 20:43:23'!
+!OOStack methodsFor: 'adding' stamp: 'FLM 11/4/2021 15:02:41'!
 push: anObject
-	| newNode |
-	newNode := NodoAveilable createWith: anObject .
-	collection addFirst: newNode.
+	self subclassResponsibility.
 	! !
 
 
@@ -421,38 +611,74 @@ stackEmptyErrorDescription
 	^ 'Stack is empty'! !
 
 
-!OOStack class methodsFor: 'as yet unclassified' stamp: 'LEI 10/31/2021 21:34:29'!
-withSizeLimit: amountElements
-! !
-
 
-!classDefinition: #Dinamyc category: 'Stack-Exercise'!
-OOStack subclass: #Dinamyc
+!classDefinition: #DynamicStack category: 'Stack-Exercise'!
+OOStack subclass: #DynamicStack
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Dinamyc methodsFor: 'as yet unclassified' stamp: 'LEI 11/2/2021 17:50:20'!
-inizialate
-	collection := OrderedCollection new.
-	collection addFirst: NullNode new.! !
+!DynamicStack methodsFor: 'initialization' stamp: 'FLM 11/4/2021 15:11:17'!
+initialize
+	collection := OrderedCollection  new.
+	collection addFirst: (NullContainer new).
+! !
+
+
+!DynamicStack methodsFor: 'adding' stamp: 'FLM 11/4/2021 15:10:33'!
+push: anObject
+	| newNode |
+	newNode := OpenContainer createWith: anObject .
+	collection addFirst: newNode.! !
 
 
-!classDefinition: #Static category: 'Stack-Exercise'!
-OOStack subclass: #Static
-	instanceVariableNames: 'maxSizeLimit'
+!classDefinition: #StaticStack category: 'Stack-Exercise'!
+OOStack subclass: #StaticStack
+	instanceVariableNames: 'maxSize'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!Static methodsFor: 'as yet unclassified' stamp: 'LEI 11/2/2021 17:49:27'!
-initialize:limit
-
+!StaticStack methodsFor: 'initialization' stamp: 'FLM 11/4/2021 15:11:17'!
+initializeWith: aSize
+	
 	collection := OrderedCollection new.
-	collection addFirst: (NullNode new).
-	maxSizeLimit := limit
-! !
+	collection addFirst: NullContainer new.
+	maxSize  := aSize.! !
+
+
+!StaticStack methodsFor: 'adding' stamp: 'FLM 11/4/2021 15:10:33'!
+push: anObject
+	| newNode |
+	(self size = maxSize ) ifTrue:[self error:(self class stackLimitReachedErrorDescription )].
+	newNode := OpenContainer createWith: anObject .
+	collection addFirst: newNode.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'StaticStack class' category: 'Stack-Exercise'!
+StaticStack class
+	instanceVariableNames: ''!
+
+!StaticStack class methodsFor: 'instance creation' stamp: 'FLM 11/4/2021 14:45:16'!
+withMaxSize: aSize
+	(aSize isInteger) ifFalse:[self error:(self invalidNumberForStackSizeErrorDescription)].
+	(aSize <= 0) ifTrue:[self error:(self nonPositiveStackSizeErrorDescription) ].
+	^ self new initializeWith: aSize .! !
+
+
+!StaticStack class methodsFor: 'error descriptions' stamp: 'FLM 11/4/2021 14:44:51'!
+invalidNumberForStackSizeErrorDescription
+	^'Invalid number!! Only whole numbers are expected'! !
+
+!StaticStack class methodsFor: 'error descriptions' stamp: 'FLM 11/4/2021 14:44:59'!
+nonPositiveStackSizeErrorDescription
+	^'Stack size must be greater than 0!!'.! !
+
+!StaticStack class methodsFor: 'error descriptions' stamp: 'FLM 11/4/2021 14:45:07'!
+stackLimitReachedErrorDescription
+	^'The stack limit has been reached!!'! !
 
 
 !classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
@@ -461,30 +687,6 @@ Object subclass: #SentenceFinderByPrefix
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
-
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'LEI 11/2/2021 17:32:09'!
-prefixToSearch: prefix inStack: stack
-      | collectionAux|
-
-	prefix size = 0 ifTrue: [^self error: self class ErrorPrefixIsEmpty ].
-	(prefix findString: ' ') = 0 ifFalse:[^self error: self class ErrorPrefixHasSpace].
-	
-	
-	
-	collectionAux := OrderedCollection new.
-	
-	
-	self forEachElementInStack: stack do:  [:popElement| 
-		self addToCollection: collectionAux ifPrefixMatches: prefix  with: popElement.
-		].
-	
-   
-
-	
-	
-	
-	^collectionAux.! !
-
 
 !SentenceFinderByPrefix methodsFor: 'private' stamp: 'LEI 11/2/2021 17:07:51'!
 addToCollection: aCollection ifPrefixMatches: prefix with: popElement 
@@ -509,25 +711,49 @@ emptyStack: stack andForEachElementDo: aBlock
 	
 	! !
 
-!SentenceFinderByPrefix methodsFor: 'private' stamp: 'LEI 11/2/2021 17:32:09'!
+!SentenceFinderByPrefix methodsFor: 'private' stamp: 'FLM 11/4/2021 15:09:14'!
 forEachElementInStack: stack do: aBlock
 
 
 |stackAux |
 
 	
-	stackAux := OOStack new.
+	stackAux := DynamicStack new.
 	
 	
-	self emptyStack: stack andForEachElementDo: [:popElement| 
-		aBlock value: popElement.
-		stackAux push: popElement
+	self emptyStack: stack andForEachElementDo: [:element| 
+		aBlock value: element.
+		stackAux push: element
 		].
 	
    
-	self emptyStack: stackAux andForEachElementDo: [:popElement| 
-		stack push: popElement
+	self emptyStack: stackAux andForEachElementDo: [:element| 
+		stack push: element
 		].! !
+
+
+!SentenceFinderByPrefix methodsFor: 'search In Stack' stamp: 'FLM 11/4/2021 14:11:03'!
+sentencesWithPrefix: prefix inStack: stack
+      | collectionAux|
+
+	prefix size = 0 ifTrue: [^self error: self class ErrorPrefixIsEmpty ].
+	(prefix findString: ' ') = 0 ifFalse:[^self error: self class ErrorPrefixHasSpace].
+	
+	
+	
+	collectionAux := OrderedCollection new.
+	
+	
+	self forEachElementInStack: stack do:  [:popElement| 
+		self addToCollection: collectionAux ifPrefixMatches: prefix  with: popElement.
+		].
+	
+   
+
+	
+	
+	
+	^collectionAux.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
