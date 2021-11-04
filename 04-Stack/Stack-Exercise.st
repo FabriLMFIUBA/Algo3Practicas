@@ -356,6 +356,24 @@ assertThatCollection: aCollection onlyContains: aElement
 	self assert: (aCollection at: 1) = aElement .
 	self assert: aCollection size = 1.! !
 
+!SentenceFinderByPrefixTest methodsFor: 'private-test' stamp: 'FLM 11/4/2021 15:21:04'!
+assertThatStack: aStack contains: firstElement then: secondElement then: thirdElement then: fourthElement
+	self assert: (aStack size = 4).
+	self assert: ((aStack pop) = firstElement ).
+	self assert: ((aStack pop) = secondElement ).
+	self assert: ((aStack pop) = thirdElement ).
+	self assert: ((aStack pop) = fourthElement ).
+	
+	aStack push: firstElement.
+	aStack push: secondElement.
+	aStack push: thirdElement.
+	aStack push: fourthElement.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'private-test' stamp: 'FLM 11/4/2021 15:17:12'!
+assertThatStack: aStack onlyContains: anElement
+	self assert: (aStack size = 1).
+	self assert: ((aStack top) = anElement).! !
+
 !SentenceFinderByPrefixTest methodsFor: 'private-test' stamp: 'LEI 11/2/2021 16:02:55'!
 fillStack: aStack with: first with: second with: third with: fourth
 
@@ -367,7 +385,7 @@ aStack push: fourth.
 ! !
 
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:37:49'!
 test01SFBPdoesntMatchWithAnySentenceInEmptyStack
 	
 	|sentencesFounded|
@@ -375,9 +393,11 @@ test01SFBPdoesntMatchWithAnySentenceInEmptyStack
 	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wint inStack: stackTest.
 	
 	self assert: sentencesFounded size = 0.
+	
+	self assert: stackTest isEmpty.
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:37:44'!
 test02SFBPdoesntFindAnySentencesWithAmatchingPrefixInStackWithOnlyOneSentence
 	
 	|sentencesFounded|
@@ -387,10 +407,12 @@ test02SFBPdoesntFindAnySentencesWithAmatchingPrefixInStackWithOnlyOneSentence
 	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wont inStack: stackTest.
 	
 	
-	self assert: sentencesFounded size = 0
+	self assert: sentencesFounded size = 0.
+	
+	self assertThatStack: stackTest onlyContains: WinterIsHere .
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:37:40'!
 test03SFBPgotOnlyOneMatchWithCorrectPrefixInStackWithOnlyOneSentence
 	
 	|sentencesFounded|
@@ -401,9 +423,11 @@ test03SFBPgotOnlyOneMatchWithCorrectPrefixInStackWithOnlyOneSentence
 	
 	
 	self assertThatCollection: sentencesFounded onlyContains: WinterIsHere.
+	
+	self assertThatStack: stackTest onlyContains: WinterIsHere .
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:37:35'!
 test04SFBSdoesntFindAnySentencesWithAMatchingPrefixInStackWithMultipleSentences
 	
  	|sentencesFounded|
@@ -412,11 +436,13 @@ test04SFBSdoesntFindAnySentencesWithAMatchingPrefixInStackWithMultipleSentences
 	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wont inStack: stackTest.
 	
 	self assert: sentencesFounded size = 0.
+	
+	self assertThatStack: stackTest contains: WinterIsHere  then: TheWindsOfWinter then: winningIsEverything then: winterIsComing .
 
 	
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:37:32'!
 test05SFBPgotOnlyOneMatchWithCorrectPrefixInStackWithMultipleSentences
 	
 
@@ -426,10 +452,12 @@ test05SFBPgotOnlyOneMatchWithCorrectPrefixInStackWithMultipleSentences
 	
 	sentencesFounded := sentenceFinderTest sentencesWithPrefix: Wint inStack: stackTest.
 	
-	self assertThatCollection: sentencesFounded  onlyContains: WinterIsHere 
+	self assertThatCollection: sentencesFounded  onlyContains: WinterIsHere.
+	
+	self assertThatStack: stackTest contains: WinterIsHere  then: TheWindsOfWinter then: winningIsEverything then: winterIsComing .
 	! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 14:11:03'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'FLM 11/4/2021 15:37:27'!
 test06SFBSfoundedMultipleSentencesWithMatchingPrefixInStackWithMultipleSentences
 	
  	|sentencesFounded|
@@ -438,7 +466,10 @@ test06SFBSfoundedMultipleSentencesWithMatchingPrefixInStackWithMultipleSentences
 	sentencesFounded := sentenceFinderTest sentencesWithPrefix: win inStack: stackTest.
 	
 	self assert: sentencesFounded size = 2.
-	self assertThatCollection: sentencesFounded FirstElementIs: winningIsEverything  andSecondElementIs: winterIsComing 
+	
+	self assertThatCollection: sentencesFounded FirstElementIs: winningIsEverything  andSecondElementIs: winterIsComing.
+	
+	self assertThatStack: stackTest contains: WinterIsHere  then: TheWindsOfWinter then: winningIsEverything then: winterIsComing .
 	
 	! !
 
