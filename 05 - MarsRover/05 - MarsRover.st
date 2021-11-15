@@ -119,6 +119,25 @@ test09PasarleVariosComandosDeMovimientoYrotarLoDejaEnLaPosicionYpuntoCardinalEsp
 	self assert: marsRovers position = (1@1).
 	self assert: marsRovers cardinaPoint = east.! !
 
+!MarsRoverTest methodsFor: 'test' stamp: 'LEI 11/13/2021 17:14:01'!
+test10EjecutaComandosHastaEncontrarUnoQueNoSePuedaEjecutarElRestoNoSeEjecuta
+
+	marsRovers := MarsRover initialPosition: positionZeroZero cardinaDirecction: north.
+	self addCommandsToMarsRover: marsRovers.
+	
+	
+	self 
+		should: [ 
+			marsRovers executeCommands:  'frxff'.
+			]
+		raise: Error
+		withExceptionDo: [ :anError | 
+			
+			self assert: marsRovers position = (0@1).
+			self assert: marsRovers cardinaPoint = east.
+			self assert: anError messageText equals: MarsRover invalidCommand ].
+	! !
+
 
 !classDefinition: #CardinalDirection category: '05 - MarsRover'!
 Object subclass: #CardinalDirection
@@ -377,11 +396,11 @@ position
 addCommand: aCommand
 	commands at: (aCommand getKey) put: aCommand.! !
 
-!MarsRover methodsFor: 'comands' stamp: 'LEI 11/12/2021 19:31:43'!
+!MarsRover methodsFor: 'comands' stamp: 'LEI 11/13/2021 16:55:45'!
 executeCommands: aStringCommands
-	
+		
 		1 to: (aStringCommands size) do:[:pos|
-				(commands at: (aStringCommands at: pos) ) executeCommand: self.
+				(commands at: (aStringCommands at: pos)  ifAbsent: [self error: MarsRover invalidCommand]) executeCommand: self.
 		]	
 	
 
@@ -409,3 +428,8 @@ MarsRover class
 !MarsRover class methodsFor: 'init' stamp: 'LEI 11/12/2021 15:38:16'!
 initialPosition: aPoint cardinaDirecction: aString 
 	^self new initialazeWithPosition: aPoint andWithCardinaPoint: aString.! !
+
+
+!MarsRover class methodsFor: 'error' stamp: 'LEI 11/13/2021 16:56:19'!
+invalidCommand
+	^'invalid command read'! !
