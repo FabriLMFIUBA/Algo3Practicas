@@ -5,6 +5,7 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
+
 !PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:49:37'!
 test01PortfolioWithNoAccountsRegisteredHas0PesosInBalance
 	|portfolio|
@@ -35,6 +36,29 @@ test03
 	
 	self assert: portfolio balance equals: 250 * peso.! !
 
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'LEI 11/27/2021 03:40:08'!
+test04
+
+	|mainPortfolio portfolio firstAccount secondAccount|
+	mainPortfolio := Portfolio new.
+	portfolio := Portfolio new.
+	
+	firstAccount := ReceptiveAccount new.
+	secondAccount  := ReceptiveAccount new.
+	
+	Deposit register: 100 * peso on: firstAccount.
+	Deposit register: 240 * peso on: secondAccount.
+
+	
+	portfolio registerAccount: firstAccount.
+	mainPortfolio registerAccount: secondAccount.
+	mainPortfolio registerAccount: portfolio.
+	
+	self assert: mainPortfolio balance equals: 340 * peso.
+	
+	
+	! !
+
 !PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 21:11:38'!
 test04BalanceDinamico
 	|portfolio firstAccount secondAccount|
@@ -51,6 +75,81 @@ test04BalanceDinamico
 	Deposit register: 150* peso on: secondAccount.
 	
 	self assert: portfolio balance equals: 400 * peso.! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'LEI 11/26/2021 17:13:13'!
+test05PortfolioWithAaccountWithoutTransacction
+
+	|portfolio firstAccount|
+	portfolio := Portfolio new.
+	firstAccount := ReceptiveAccount new.
+	portfolio registerAccount: firstAccount .
+	
+	self deny: portfolio isAnyAccountWithTransacction.
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'LEI 11/26/2021 17:49:25'!
+test06PortfolioWithAaccountWithTransacction
+
+	|portfolio firstAccount|
+	portfolio := Portfolio new.
+	firstAccount := ReceptiveAccount new.	
+	Deposit register: 100 * peso on: firstAccount. 
+	
+	portfolio registerAccount: firstAccount .
+	
+	self assert: portfolio isAnyAccountWithTransacction.
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'LEI 11/26/2021 18:06:05'!
+test07PortfolioWithAaccountWithTransacctionAndAnotherWithOutTransaction
+
+	|portfolio firstAccount secondAccount|
+	portfolio := Portfolio new.
+	firstAccount := ReceptiveAccount new.
+	secondAccount := ReceptiveAccount new.
+		
+	Deposit register: 100 * peso on: secondAccount . 
+
+	portfolio registerAccount: firstAccount.
+	portfolio registerAccount: secondAccount.
+	
+	self assert: portfolio isAnyAccountWithTransacction.
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'LEI 11/27/2021 14:49:35'!
+test08MainPortfolioWithAaccountWithOutTransacctionAndAnotherPortfolioWithAccountWithTranssactions
+
+	|mainPortfolio portfolio firstAccount secondAccount|
+	mainPortfolio := Portfolio new.
+	portfolio := Portfolio new.
+	firstAccount := ReceptiveAccount new.
+	secondAccount := ReceptiveAccount new.
+		
+	Deposit register: 100 * peso on: secondAccount.
+	 
+
+	mainPortfolio registerAccount: firstAccount.
+	portfolio registerAccount: secondAccount.
+	mainPortfolio registerAccount: portfolio.
+	
+	self assert: mainPortfolio isAnyAccountWithTransacction.
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'LEI 11/27/2021 16:15:46'!
+test09
+
+	|portfolio firstAccount accountTransactions|
+	portfolio := Portfolio new.
+	
+	firstAccount := ReceptiveAccount new.
+
+		
+	Deposit register: 100 * peso on: firstAccount.
+
+	portfolio registerAccount: firstAccount.
+	
+	accountTransactions:= portfolio getTransactionFromAccount: firstAccount.
+	self assert: (firstAccount compareTransactions: accountTransactions).! !
 
 
 !classDefinition: #ReceptiveAccountTest category: 'ServiciosFinancieros-Ejercicio'!
@@ -374,6 +473,20 @@ balance
 initialize
 	registeredAccounts := OrderedCollection new.! !
 
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'LEI 11/27/2021 14:44:49'!
+isAnyAccountWithTransacction
+
+	registeredAccounts do:[ :anAccount | 
+		(anAccount isKindOf: ReceptiveAccount) ifTrue:[
+				((anAccount transactions) size) 		>= 1 ifTrue:[ ^true].
+			]ifFalse:[
+				^anAccount isAnyAccountWithTransacction
+			].
+		
+		].
+	^false
+	! !
+
 !Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 21:13:07'!
 registerAccount: anAccount
 	registeredAccounts add: anAccount.! !
@@ -445,7 +558,6 @@ withdrawLeg
 !classDefinition: 'Transfer class' category: 'ServiciosFinancieros-Ejercicio'!
 Transfer class
 	instanceVariableNames: ''!
-
 
 !Transfer class methodsFor: 'instance creation' stamp: 'FLM 11/25/2021 20:37:25'!
 from: originAccount to: destinationAccount for: ammountInPesos
