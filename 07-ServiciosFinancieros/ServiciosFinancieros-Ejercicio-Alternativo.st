@@ -5,14 +5,14 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:49:37'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/25/2021 20:49:37'!
 test01PortfolioWithNoAccountsRegisteredHas0PesosInBalance
 	|portfolio|
 	portfolio := Portfolio new.
 	
 	self assert: portfolio balance equals: 0 * peso.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/27/2021 23:21:39'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/27/2021 23:21:39'!
 test02PortfolioWithOneAccountCalculatesBalanceAccordingly
 	|portfolio anAccount|
 	portfolio := Portfolio new.
@@ -22,7 +22,7 @@ test02PortfolioWithOneAccountCalculatesBalanceAccordingly
 	
 	self assert: portfolio balance equals: 100 * peso.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/27/2021 23:22:48'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/27/2021 23:22:48'!
 test03PortfolioWithMultipleAccountsCalculatesBalanceAccordingly
 	|portfolio firstAccount secondAccount|
 	portfolio := Portfolio new.
@@ -35,7 +35,7 @@ test03PortfolioWithMultipleAccountsCalculatesBalanceAccordingly
 	
 	self assert: portfolio balance equals: 250 * peso.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/27/2021 23:23:09'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/27/2021 23:23:09'!
 test04PortfolioBalanceUpdatesDinamically
 	|portfolio firstAccount secondAccount|
 	portfolio := Portfolio new.
@@ -52,7 +52,7 @@ test04PortfolioBalanceUpdatesDinamically
 	
 	self assert: portfolio balance equals: 400 * peso.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 00:36:45'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 00:36:45'!
 test05PortfolioWithAnotherPortfolioInsideCalculatesBalanceAccordingly
 	|firstPortfolio secondPortfolio firstAccount secondAccount|
 	firstPortfolio := Portfolio new.
@@ -69,7 +69,7 @@ test05PortfolioWithAnotherPortfolioInsideCalculatesBalanceAccordingly
 	
 	self assert: firstPortfolio balance equals: 250 * peso.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 00:37:11'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 00:37:11'!
 test06PortfolioWithMultiplePortfoliosInsideCalculatesBalanceAccordingly
 	|firstPortfolio secondPortfolio thirdPortfolio fourthPortfolio firstAccount secondAccount thirdAccount|
 	firstPortfolio := Portfolio new.
@@ -95,7 +95,7 @@ test06PortfolioWithMultiplePortfoliosInsideCalculatesBalanceAccordingly
 	
 	self assert: firstPortfolio balance equals: 350 * peso.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 00:38:06'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 00:38:06'!
 test07EmptyPortfolioDoesntIncludeASpecificTransaction
 	|portfolio anAccount deposit|
 	portfolio := Portfolio new.
@@ -104,7 +104,7 @@ test07EmptyPortfolioDoesntIncludeASpecificTransaction
 	
 	self deny: (portfolio hasRegistered: deposit).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 00:38:46'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 00:38:46'!
 test08PortfolioWithOneAccountHasRegisteredADepositAccordingly
 	|portfolio anAccount deposit|
 	portfolio := Portfolio new.
@@ -114,7 +114,7 @@ test08PortfolioWithOneAccountHasRegisteredADepositAccordingly
 	
 	self assert: (portfolio hasRegistered: deposit).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 00:39:21'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 00:39:21'!
 test09PortfolioWithMultipleAccountsRegisteredADepositAccrodingly
 	|portfolio firstAccount secondAccount deposit|
 	portfolio := Portfolio new.
@@ -127,7 +127,7 @@ test09PortfolioWithMultipleAccountsRegisteredADepositAccrodingly
 	
 	self assert: (portfolio hasRegistered: deposit).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 00:40:05'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 00:40:05'!
 test10PortfolioWithAnotherPortfolioInsideRegistersADepositAccordingly
 	|firstPortfolio secondPortfolio firstAccount secondAccount deposit|
 	firstPortfolio := Portfolio new.
@@ -144,7 +144,7 @@ test10PortfolioWithAnotherPortfolioInsideRegistersADepositAccordingly
 	
 	self assert: (firstPortfolio hasRegistered: deposit).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 00:40:29'!
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 00:40:29'!
 test11PortfolioWithMultiplePortfoliosInsideRegiteredADepositAccordingly
 	|firstPortfolio secondPortfolio thirdPortfolio firstAccount secondAccount thirdAccount deposit|
 	firstPortfolio := Portfolio new.
@@ -167,6 +167,183 @@ test11PortfolioWithMultiplePortfoliosInsideRegiteredADepositAccordingly
 	firstPortfolio registerAccount: thirdPortfolio.
 	
 	self assert: (firstPortfolio hasRegistered: deposit ).! !
+
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 14:17:49'!
+test12EmptyPortfolioDoesntIncludeTransactions
+	|portfolio |
+	portfolio := Portfolio new.
+	
+	self assert: (portfolio transactions) size = 0.! !
+
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 14:22:31'!
+test13TransactionsFromPortfolioWithOneAccountAre
+	|portfolio anAccount deposit withdraw transactions|
+	portfolio := Portfolio new.
+	anAccount := ReceptiveAccount new.
+	deposit := Deposit register: 100* peso on: anAccount.
+	withdraw := Withdraw register: 50*peso on: anAccount .
+	portfolio registerAccount: anAccount. 
+	
+	
+	transactions := portfolio transactions.
+	self assert: (transactions at: 1) = deposit.
+	self assert: (transactions at: 2) = withdraw.
+	self assert:(transactions size) = 2.! !
+
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 14:55:49'!
+test14
+	|portfolio anAccount anotherAccount deposit withdraw transactions|
+	portfolio := Portfolio new.
+	
+	anAccount := ReceptiveAccount new.
+	deposit := Deposit register: 100* peso on: anAccount.
+	
+	anotherAccount := ReceptiveAccount new.
+	withdraw := Withdraw register: 50*peso on: anotherAccount .
+	
+	portfolio registerAccount: anAccount. 
+	portfolio registerAccount:  anotherAccount.
+	
+	
+	transactions := portfolio transactions.
+	self assert:(transactions size) = 2.
+	self assert: (transactions at: 1) = deposit.
+	self assert: (transactions at: 2) = withdraw.
+	! !
+
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 14:56:34'!
+test15
+	|portfolio anotherPortfolio anAccount anotherAccount deposit withdraw transactions|
+	portfolio := Portfolio new.
+	anotherPortfolio := Portfolio new.	
+	
+	anAccount := ReceptiveAccount new.
+	deposit := Deposit register: 100* peso on: anAccount.
+	
+	anotherAccount := ReceptiveAccount new.
+	withdraw := Withdraw register: 50*peso on: anotherAccount .
+	
+	portfolio registerAccount: anAccount. 
+	anotherPortfolio registerAccount: anotherAccount.
+	portfolio registerAccount: anotherPortfolio .
+	
+	
+	transactions := portfolio transactions.
+	self assert:(transactions size) = 2.
+	self assert: (transactions at: 1) = deposit.
+	self assert: (transactions at: 2) = withdraw.
+	! !
+
+!PortfolioTest methodsFor: 'test main protocol' stamp: 'FLM 11/28/2021 15:03:58'!
+test16
+	|mainPortfolio firstAuxPortfolio secondAuxPortfolio firstAccount secondAccount  thirdAccount deposit withdraw  transfer transactions|
+	
+	mainPortfolio := Portfolio new.
+	firstAuxPortfolio := Portfolio new.	
+	secondAuxPortfolio := Portfolio new.	
+	
+	firstAccount := ReceptiveAccount new.
+	deposit := Deposit register: 100* peso on: firstAccount .
+	mainPortfolio registerAccount: firstAccount.
+	
+	secondAccount := ReceptiveAccount new.
+	withdraw := Withdraw register: 50*peso on: secondAccount .
+	firstAuxPortfolio registerAccount: secondAccount.
+	mainPortfolio registerAccount: firstAuxPortfolio.
+	
+	thirdAccount := ReceptiveAccount new.
+	transfer := Transfer from: thirdAccount to: secondAccount  for: 10*peso. 
+	secondAuxPortfolio registerAccount: thirdAccount.
+	mainPortfolio registerAccount: secondAuxPortfolio.
+
+	
+	
+	transactions := mainPortfolio transactions.
+	self assert:(transactions size) = 4.
+	self assert: (transactions at: 1) = deposit.
+	self assert: (transactions at: 2) = withdraw.
+	self assert: (transactions at: 3) = transfer depositLeg.
+	self assert: (transactions at: 4) = transfer withdrawLeg .
+	! !
+
+
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 15:23:39'!
+test01ErrorCuentaDuplicada
+	|portfolio anAccount|
+	
+	portfolio := Portfolio new.
+	anAccount := ReceptiveAccount new.
+	portfolio registerAccount: anAccount.
+	self should:[portfolio registerAccount: anAccount.] 
+	raise: Error 
+	withExceptionDo:[:anError|
+		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
+
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 15:56:35'!
+test02ErrorCuentaDuplicada
+	|portfolio anotherPortfolio anAccount|
+	
+	portfolio := Portfolio new.
+	anotherPortfolio := Portfolio new.
+	anAccount := ReceptiveAccount new.
+	anotherPortfolio registerAccount: anAccount.
+	portfolio registerAccount: anotherPortfolio .
+	self should:[portfolio registerAccount: anAccount.] 
+	raise: Error 
+	withExceptionDo:[:anError|
+		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
+
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 15:53:32'!
+test03ErrorAlmacenarASiMismoEnPortfolio
+	|portfolio |
+	
+	portfolio := Portfolio new..
+	self should:[portfolio registerAccount: portfolio .] 
+	raise: Error 
+	withExceptionDo:[:anError|
+		self assert: anError messageText equals: Portfolio portfolioCannotRegisterItselfErrorMessage ].! !
+
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 16:07:37'!
+test03bErrorAlmacenarASiMismoEnPortfolio
+	|mainPortfolio anotherPortfolio|
+	
+	mainPortfolio := Portfolio new.
+	anotherPortfolio := Portfolio new.
+	anotherPortfolio registerAccount: mainPortfolio.
+	self should:[mainPortfolio registerAccount: anotherPortfolio .] 
+	raise: Error 
+	withExceptionDo:[:anError|
+		self assert: anError messageText equals: Portfolio portfolioCannotRegisterItselfErrorMessage ].! !
+
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 16:16:33'!
+test04ErrorRegistrarCuentaExistenteEnPadreEnPortfolioHijo
+	|mainPortfolio anotherPortfolio anAccount|
+	
+	mainPortfolio := Portfolio new.
+	anotherPortfolio  := Portfolio new.
+	anAccount := ReceptiveAccount new.
+	
+	mainPortfolio registerAccount: anAccount.
+	mainPortfolio registerAccount: anotherPortfolio.
+	
+	self should:[anotherPortfolio registerAccount: anAccount .] 
+	raise: Error 
+	withExceptionDo:[:anError|
+		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
+
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 16:53:34'!
+test05ErrorCuentaDuplicada
+	|portfolio anotherPortfolio anAccount|
+	
+	portfolio := Portfolio new.
+	anotherPortfolio := Portfolio new.
+	anAccount := ReceptiveAccount new.
+	anotherPortfolio registerAccount: anAccount.
+	portfolio registerAccount: anAccount .
+	self should:[portfolio registerAccount: anotherPortfolio .] 
+	raise: Error 
+	withExceptionDo:[:anError|
+		self assert: anError messageText equals: Portfolio cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage ].! !
 
 
 !classDefinition: #ReceptiveAccountTest category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
@@ -486,16 +663,15 @@ Object subclass: #Portfolio
 balance
 	^registeredAccounts sum: [ :anAccount | anAccount balance.		] ifEmpty: [ 0 ]! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 21:12:39'!
-initialize
-	registeredAccounts := OrderedCollection new.! !
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 17:22:44'!
+canBeIncludedIn: aPortfolio
+	(aPortfolio = self)ifTrue: [self error: self class portfolioCannotRegisterItselfErrorMessage ].
+	registeredAccounts do:[:element| (element isKindOf: ReceptiveAccount)ifTrue:[(aPortfolio includesAccount: element) ifTrue: [self error: self class cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage ]]
+		ifFalse: [^element canBeIncludedIn: aPortfolio] .].
+	^true.
+	! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 21:13:07'!
-registerAccount: anAccount
-	registeredAccounts add: anAccount.! !
-
-
-!Portfolio methodsFor: 'nil' stamp: 'FLM 11/27/2021 23:43:11'!
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/27/2021 23:43:11'!
 hasRegistered: aTransaction
 	|i registrado|
 	i := 1.
@@ -504,6 +680,50 @@ hasRegistered: aTransaction
 		registrado := ((registeredAccounts at: i) hasRegistered: aTransaction).
 		i := i+1].
 	^registrado .! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 16:45:25'!
+includesAccount: anAccount
+	
+	registeredAccounts do:[:element| (element includesAccount: anAccount)ifTrue: [^true]].
+	^false.
+	! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 21:12:39'!
+initialize
+	registeredAccounts := OrderedCollection new.! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 16:56:26'!
+registerAccount: anAccount
+	
+	
+	(anAccount canBeIncludedIn: self) ifTrue:[registeredAccounts add: anAccount.].
+	
+	! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 14:54:05'!
+transactions
+	|transactions|
+	transactions  := OrderedCollection new.
+	registeredAccounts do:[:element| transactions addAllLast: (element transactions)].
+	^transactions.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Portfolio class' category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
+Portfolio class
+	instanceVariableNames: ''!
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 16:51:02'!
+cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage
+	^ 'Cannot register a portfolio if it contains an existing account in parent porfolio!!'.! !
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 15:09:46'!
+cannotRegisterDuplicateAccountsErrorMessage
+	^ 'Cannot register this account!! It already exists in this portfolio!!'.! !
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 15:53:21'!
+portfolioCannotRegisterItselfErrorMessage
+	^ 'A portfolio cannot register itself'.! !
 
 
 !classDefinition: #ReceptiveAccount category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
@@ -540,6 +760,15 @@ register: aTransaction
 transactions 
 
 	^ transactions copy! !
+
+
+!ReceptiveAccount methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 16:52:04'!
+canBeIncludedIn: aPortfolio
+	(aPortfolio includesAccount: self) ifTrue: [self error: Portfolio cannotRegisterDuplicateAccountsErrorMessage] ifFalse: [^true].	! !
+
+!ReceptiveAccount methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 16:00:35'!
+includesAccount: anAccount
+	^anAccount  = self.! !
 
 
 !classDefinition: #Transfer category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
