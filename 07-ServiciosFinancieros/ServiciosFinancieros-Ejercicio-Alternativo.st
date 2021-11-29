@@ -315,7 +315,7 @@ test03bErrorPortfolioCannotRegisterAPortfolioThatContainsItself
 	withExceptionDo:[:anError|
 		self assert: anError messageText equals: Portfolio portfolioCannotRegisterItselfErrorMessage ].! !
 
-!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 16:16:33'!
+!PortfolioTest methodsFor: 'test errors' stamp: 'LEI 11/29/2021 15:28:49'!
 test04ErrorRegistrarCuentaExistenteEnPadreEnPortfolioHijo
 	|mainPortfolio anotherPortfolio anAccount|
 	
@@ -329,9 +329,9 @@ test04ErrorRegistrarCuentaExistenteEnPadreEnPortfolioHijo
 	self should:[anotherPortfolio registerAccount: anAccount .] 
 	raise: Error 
 	withExceptionDo:[:anError|
-		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
+		self assert: anError messageText equals: Portfolio cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage ].! !
 
-!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/29/2021 12:32:13'!
+!PortfolioTest methodsFor: 'test errors' stamp: 'LEI 11/29/2021 15:00:20'!
 test05ErrorPortfolioCannotRegisterAPortfolioThatAlreadyIncludesAPreviouslyRegisteredAccount
 	|portfolio anotherPortfolio anAccount|
 	
@@ -343,7 +343,7 @@ test05ErrorPortfolioCannotRegisterAPortfolioThatAlreadyIncludesAPreviouslyRegist
 	self should:[portfolio registerAccount: anotherPortfolio .] 
 	raise: Error 
 	withExceptionDo:[:anError|
-		self assert: anError messageText equals: Portfolio cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage ].! !
+		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
 
 
 !classDefinition: #ReceptiveAccountTest category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
@@ -654,7 +654,7 @@ for: aValue
 
 !classDefinition: #Portfolio category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
 Object subclass: #Portfolio
-	instanceVariableNames: 'registeredAccounts'
+	instanceVariableNames: 'registeredAccounts parent'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
@@ -673,12 +673,14 @@ hasRegistered: aTransaction
 		i := i+1].
 	^registrado .! !
 
-!Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/28/2021 16:56:26'!
+!Portfolio methodsFor: 'main protocol' stamp: 'LEI 11/29/2021 17:11:54'!
 registerAccount: anAccount
 	
-	
-	(anAccount canBeIncludedIn: self) ifTrue:[registeredAccounts add: anAccount.].
-	
+	(anAccount canBeIncludedIn: self) ifTrue:[
+		
+		(anAccount isKindOf: Portfolio) ifTrue:[anAccount setPortfolioParent: self.].
+		registeredAccounts add: anAccount.
+		].
 	! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/28/2021 14:54:05'!
@@ -689,16 +691,20 @@ transactions
 	^transactions.! !
 
 
-!Portfolio methodsFor: 'initialization' stamp: 'FLM 11/25/2021 21:12:39'!
+!Portfolio methodsFor: 'initialization' stamp: 'LEI 11/29/2021 15:23:17'!
 initialize
-	registeredAccounts := OrderedCollection new.! !
+	registeredAccounts := OrderedCollection new.
+	parent := nil.! !
 
 
-!Portfolio methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 17:22:44'!
+!Portfolio methodsFor: 'for portfolio' stamp: 'LEI 11/29/2021 16:44:26'!
 canBeIncludedIn: aPortfolio
 	(aPortfolio = self)ifTrue: [self error: self class portfolioCannotRegisterItselfErrorMessage ].
-	registeredAccounts do:[:element| (element isKindOf: ReceptiveAccount)ifTrue:[(aPortfolio includesAccount: element) ifTrue: [self error: self class cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage ]]
-		ifFalse: [^element canBeIncludedIn: aPortfolio] .].
+
+	
+	
+	registeredAccounts do:[:element|  element canBeIncludedIn: aPortfolio]. 	
+	
 	^true.
 	! !
 
@@ -708,6 +714,17 @@ includesAccount: anAccount
 	registeredAccounts do:[:element| (element includesAccount: anAccount)ifTrue: [^true]].
 	^false.
 	! !
+
+!Portfolio methodsFor: 'for portfolio' stamp: 'LEI 11/29/2021 16:42:19'!
+includesAccountMyParent:anAccount.
+	(parent ~= nil) ifTrue:[. 
+	 ^(parent includesAccount: anAccount).
+	].
+	^false! !
+
+!Portfolio methodsFor: 'for portfolio' stamp: 'LEI 11/29/2021 16:41:05'!
+setPortfolioParent: aPortofolio
+	parent := aPortofolio.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -764,9 +781,12 @@ transactions
 	^ transactions copy! !
 
 
-!ReceptiveAccount methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 16:52:04'!
+!ReceptiveAccount methodsFor: 'for portfolio' stamp: 'LEI 11/29/2021 16:42:19'!
 canBeIncludedIn: aPortfolio
-	(aPortfolio includesAccount: self) ifTrue: [self error: Portfolio cannotRegisterDuplicateAccountsErrorMessage] ifFalse: [^true].	! !
+	(aPortfolio includesAccountMyParent: self) ifTrue:[self error: Portfolio cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage].
+	(aPortfolio includesAccount: self) ifTrue: [self error: Portfolio cannotRegisterDuplicateAccountsErrorMessage] ifFalse: [^true].	
+	
+	! !
 
 !ReceptiveAccount methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 16:00:35'!
 includesAccount: anAccount
