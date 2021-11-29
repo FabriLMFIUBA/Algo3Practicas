@@ -267,8 +267,8 @@ test16
 	! !
 
 
-!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 15:23:39'!
-test01ErrorCuentaDuplicada
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/29/2021 12:24:58'!
+test01ErrorDuplicateAccounts
 	|portfolio anAccount|
 	
 	portfolio := Portfolio new.
@@ -279,8 +279,8 @@ test01ErrorCuentaDuplicada
 	withExceptionDo:[:anError|
 		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
 
-!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 15:56:35'!
-test02ErrorCuentaDuplicada
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/29/2021 12:30:26'!
+test02ErrorAccountAlreadyRegisteredInAnotherPortfolioInsideTheDesiredOne
 	|portfolio anotherPortfolio anAccount|
 	
 	portfolio := Portfolio new.
@@ -293,8 +293,8 @@ test02ErrorCuentaDuplicada
 	withExceptionDo:[:anError|
 		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
 
-!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 15:53:32'!
-test03ErrorAlmacenarASiMismoEnPortfolio
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/29/2021 12:30:54'!
+test03ErrorPortfolioCannotRegisterItself
 	|portfolio |
 	
 	portfolio := Portfolio new..
@@ -303,8 +303,8 @@ test03ErrorAlmacenarASiMismoEnPortfolio
 	withExceptionDo:[:anError|
 		self assert: anError messageText equals: Portfolio portfolioCannotRegisterItselfErrorMessage ].! !
 
-!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 16:07:37'!
-test03bErrorAlmacenarASiMismoEnPortfolio
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/29/2021 12:31:19'!
+test03bErrorPortfolioCannotRegisterAPortfolioThatContainsItself
 	|mainPortfolio anotherPortfolio|
 	
 	mainPortfolio := Portfolio new.
@@ -331,8 +331,8 @@ test04ErrorRegistrarCuentaExistenteEnPadreEnPortfolioHijo
 	withExceptionDo:[:anError|
 		self assert: anError messageText equals: Portfolio cannotRegisterDuplicateAccountsErrorMessage ].! !
 
-!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/28/2021 16:53:34'!
-test05ErrorCuentaDuplicada
+!PortfolioTest methodsFor: 'test errors' stamp: 'FLM 11/29/2021 12:32:13'!
+test05ErrorPortfolioCannotRegisterAPortfolioThatAlreadyIncludesAPreviouslyRegisteredAccount
 	|portfolio anotherPortfolio anAccount|
 	
 	portfolio := Portfolio new.
@@ -659,19 +659,11 @@ Object subclass: #Portfolio
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio-Alternativo'!
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 21:13:52'!
+!Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/25/2021 21:13:52'!
 balance
 	^registeredAccounts sum: [ :anAccount | anAccount balance.		] ifEmpty: [ 0 ]! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 17:22:44'!
-canBeIncludedIn: aPortfolio
-	(aPortfolio = self)ifTrue: [self error: self class portfolioCannotRegisterItselfErrorMessage ].
-	registeredAccounts do:[:element| (element isKindOf: ReceptiveAccount)ifTrue:[(aPortfolio includesAccount: element) ifTrue: [self error: self class cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage ]]
-		ifFalse: [^element canBeIncludedIn: aPortfolio] .].
-	^true.
-	! !
-
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/27/2021 23:43:11'!
+!Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/27/2021 23:43:11'!
 hasRegistered: aTransaction
 	|i registrado|
 	i := 1.
@@ -681,18 +673,7 @@ hasRegistered: aTransaction
 		i := i+1].
 	^registrado .! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 16:45:25'!
-includesAccount: anAccount
-	
-	registeredAccounts do:[:element| (element includesAccount: anAccount)ifTrue: [^true]].
-	^false.
-	! !
-
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 21:12:39'!
-initialize
-	registeredAccounts := OrderedCollection new.! !
-
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 16:56:26'!
+!Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/28/2021 16:56:26'!
 registerAccount: anAccount
 	
 	
@@ -700,12 +681,33 @@ registerAccount: anAccount
 	
 	! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 14:54:05'!
+!Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/28/2021 14:54:05'!
 transactions
 	|transactions|
 	transactions  := OrderedCollection new.
 	registeredAccounts do:[:element| transactions addAllLast: (element transactions)].
 	^transactions.! !
+
+
+!Portfolio methodsFor: 'initialization' stamp: 'FLM 11/25/2021 21:12:39'!
+initialize
+	registeredAccounts := OrderedCollection new.! !
+
+
+!Portfolio methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 17:22:44'!
+canBeIncludedIn: aPortfolio
+	(aPortfolio = self)ifTrue: [self error: self class portfolioCannotRegisterItselfErrorMessage ].
+	registeredAccounts do:[:element| (element isKindOf: ReceptiveAccount)ifTrue:[(aPortfolio includesAccount: element) ifTrue: [self error: self class cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage ]]
+		ifFalse: [^element canBeIncludedIn: aPortfolio] .].
+	^true.
+	! !
+
+!Portfolio methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 16:45:25'!
+includesAccount: anAccount
+	
+	registeredAccounts do:[:element| (element includesAccount: anAccount)ifTrue: [^true]].
+	^false.
+	! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
