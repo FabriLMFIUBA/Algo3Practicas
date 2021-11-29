@@ -1,0 +1,2 @@
+Con respecto al mensaje registerAccount: del "main protocol" y los de includesAccount: e includesAccountInParents:, todos funcionan tanto como
+para registrar y buscar cuentas, como tambien para portfolios. No se nos ocurrio un nombre que incluya a ambos.
