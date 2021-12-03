@@ -871,6 +871,63 @@ test04ptp
 	self assert:  (report at:4) equals: '      Cuenta de Juan'.
 	self assert:  (report at:5) equals: '      Cuenta de Angeles'.! !
 
+
+!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'FLM 12/3/2021 17:24:44'!
+test01pdtp
+	|mainPortfolio report|
+	
+	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
+	
+	report := PortfolioDetailedTreePrinter of:mainPortfolio.
+	
+	self assert: report size equals: 2.
+	
+	self assert:(report at:1) equals: 'Portfolio familia Vallejos'.
+	self assert:(report at:2) equals: '   Balance = 0 pesos'.! !
+
+!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'FLM 12/3/2021 17:31:23'!
+test02pdtp
+	|mainPortfolio anAccount report|
+	
+	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
+	anAccount := ReceptiveAccount named: 'Cuenta de Maria'.
+	mainPortfolio registerAccount: anAccount.
+	report := PortfolioDetailedTreePrinter of:mainPortfolio.
+	
+	self assert: report size equals: 4.
+	
+	self assert:(report at:1) equals: 'Portfolio familia Vallejos'.
+	self assert:(report at:2) equals: '   Cuenta de Maria'.
+	self assert:(report at:3) equals: '      Balance = 0 pesos'.
+	self assert:(report at:4) equals: '   Balance = 0 pesos'.! !
+
+!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'FLM 12/3/2021 17:43:49'!
+test03pdtp
+	|mainPortfolio anAccount auxAccount report|
+	
+	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
+	anAccount := ReceptiveAccount named: 'Cuenta de Maria'.
+	Deposit register: 100* peso on: anAccount.
+	Withdraw register: 150* peso on: anAccount.
+	mainPortfolio registerAccount: anAccount.
+	
+	auxAccount := ReceptiveAccount named: 'Cuenta auxiliar'.
+	Transfer from: auxAccount to: anAccount for: 50*peso.
+	 Transfer from: anAccount to: auxAccount for: 250*peso.
+	
+	report := PortfolioDetailedTreePrinter of:mainPortfolio.
+	
+	self assert: report size equals: 8.
+	
+	self assert:(report at:1) equals: 'Portfolio familia Vallejos'.
+	self assert:(report at:2) equals: '   Cuenta de Maria'.
+	self assert:(report at:3) equals: '      Deposito por 100 pesos'.
+	self assert:(report at:4) equals: '      Extraccion por 150 pesos'.
+	self assert:(report at:5) equals: '      Entrada por transferencia por 50 pesos'.
+	self assert:(report at:6) equals: '      Salida por transferencia por 250 pesos'.
+	self assert:(report at:7) equals: '      Balance = -250 pesos'.
+	self assert:(report at:8) equals: '   Balance = -250 pesos'.! !
+
 
 !classDefinition: #Account category: 'ServiciosFinancieros-Ejercicio2'!
 Object subclass: #Account
@@ -1431,6 +1488,73 @@ AccountSummary class
 !AccountSummary class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 14:46:30'!
 of: anAccount
 	^self new initializeFor: anAccount.! !
+
+
+!classDefinition: #PortfolioDetailedTreePrinter category: 'ServiciosFinancieros-Ejercicio2'!
+Report subclass: #PortfolioDetailedTreePrinter
+	instanceVariableNames: 'numberOfTabs'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio2'!
+
+!PortfolioDetailedTreePrinter methodsFor: 'initialization' stamp: 'FLM 12/3/2021 17:41:26'!
+initializeWith: aPortfolio
+	report := OrderedCollection new.
+	numberOfTabs := 0.
+	self addAccountsDataFromPortfolio: aPortfolio.
+	^report.! !
+
+
+!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:43:10'!
+addAccountsDataFromPortfolio: aPortfolio
+	report add: (self tabs,aPortfolio name).
+	numberOfTabs := numberOfTabs +1.
+	aPortfolio forEachDirectChildAccountDo: [:childAccount| 
+			'childAccount visitedByReport: self'.
+			(childAccount isKindOf: Portfolio)ifTrue:[self addAccountsDataFromPortfolio: childAccount].
+			(childAccount isKindOf: ReceptiveAccount )ifTrue: [
+				report add: (self tabs,childAccount name).
+				numberOfTabs := numberOfTabs +1.
+				childAccount forEachTransactionDo: [:aTransaction| aTransaction visitedByReport: self].
+				].
+				report add: (self tabs,'Balance = ',childAccount balance asString).
+				numberOfTabs := numberOfTabs -1.
+		].
+	report add:(self tabs,'Balance = ',aPortfolio balance asString).
+	numberOfTabs := numberOfTabs - 1.! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:39:13'!
+processDeposit: aDeposit
+	report add: (self tabs,'Deposito por ',aDeposit value asString).! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:39:45'!
+processTransferDeposit: aTransferDeposit
+	report add: (self tabs,'Entrada por transferencia por ',aTransferDeposit value asString).! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:40:04'!
+processTransferWithdraw: aTransferWithdraw
+	report add: (self tabs,'Salida por transferencia por ',aTransferWithdraw value asString).! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:39:06'!
+processWithdraw: aWithdraw
+	report add: (self tabs,'Extraccion por ',aWithdraw value asString).! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:34:19'!
+tabs
+	|tabs|
+	tabs:=''.
+	(1 to: numberOfTabs ) do:[:i| tabs := ('   ',tabs)].
+	^tabs.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'PortfolioDetailedTreePrinter class' category: 'ServiciosFinancieros-Ejercicio2'!
+PortfolioDetailedTreePrinter class
+	instanceVariableNames: ''!
+
+!PortfolioDetailedTreePrinter class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 17:26:17'!
+of: aPortfolio
+	^self new initializeWith: aPortfolio .! !
 
 
 !classDefinition: #PortfolioTreePrinter category: 'ServiciosFinancieros-Ejercicio2'!
