@@ -1014,6 +1014,11 @@ infoAsString
 
 	self subclassResponsibility ! !
 
+
+!AccountTransaction methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:54:17'!
+visitedByReport: aReport
+	self subclassResponsibility.! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'AccountTransaction class' category: 'ServiciosFinancieros-Ejercicio2'!
@@ -1055,11 +1060,9 @@ value
 	^ value! !
 
 
-!Deposit methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 15:30:09'!
-infoAsString
-
-	^('Deposito por ', (self value) asString).
-	! !
+!Deposit methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:55:02'!
+visitedByReport: aReport
+	aReport processDeposit: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1096,12 +1099,6 @@ balanceValue
 counterpart
 	^ transfer withdrawLeg .! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 15:31:20'!
-infoAsString
-
-	^('Entrada por transferencia de ', (self value) asString).
-		! !
-
 !TransferDeposit methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:31:56'!
 initializeWithValue: aValue fromTransfer: aTransfer
 	value := aValue.
@@ -1111,6 +1108,11 @@ initializeWithValue: aValue fromTransfer: aTransfer
 value
 
 	^ value! !
+
+
+!TransferDeposit methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:55:25'!
+visitedByReport: aReport
+	aReport processTransferDeposit: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1141,14 +1143,6 @@ balanceValue
 counterpart
 	^ transfer depositLeg .! !
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 15:32:03'!
-infoAsString
-
-
-	
-		^('Salida por transferencia de ', (self value) asString).
-		! !
-
 !TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:33:13'!
 initializeWithValue: aValue fromTransfer: aTransfer
 	value := aValue.
@@ -1158,6 +1152,11 @@ initializeWithValue: aValue fromTransfer: aTransfer
 value
 
 	^ value! !
+
+
+!TransferWithdraw methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:55:49'!
+visitedByReport: aReport
+	aReport processTransferWithdraw: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1197,12 +1196,9 @@ value
 	^ value! !
 
 
-!Withdraw methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 15:30:50'!
-infoAsString
-
-		^ ('Extraccion por ', (self value) asString).
-		
-	! !
+!Withdraw methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:56:04'!
+visitedByReport: aReport
+	aReport processWithdraw: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1218,10 +1214,26 @@ for: aValue
 
 !classDefinition: #Report category: 'ServiciosFinancieros-Ejercicio2'!
 Object subclass: #Report
-	instanceVariableNames: ''
+	instanceVariableNames: 'report'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
+
+!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:39:33'!
+processDeposit: aDeposit
+	^self subclassResponsibility.! !
+
+!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:40:15'!
+processTransferDeposit: aTransferDeposit
+	^self subclassResponsibility.! !
+
+!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:40:24'!
+processTransferWithdraw: aTransferWithdraw
+	^self subclassResponsibility.! !
+
+!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:39:46'!
+processWithdraw: aWithdraw
+	^self subclassResponsibility.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1241,31 +1253,80 @@ Report subclass: #AccountSummary
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
+!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:49:22'!
+processDeposit: aDeposit
+	report add: ('Deposito por ', (aDeposit value) asString).
+	! !
+
+!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:51:06'!
+processTransferDeposit: aTransferDeposit
+	report add: ('Entrada por transferencia de ', (aTransferDeposit value) asString).
+	! !
+
+!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:51:31'!
+processTransferWithdraw: aTransferWithdraw
+	report add: ('Salida por transferencia de ', (aTransferWithdraw value) asString).
+	! !
+
+!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:50:11'!
+processWithdraw: aWithdraw
+	report add: ('Extraccion por ', (aWithdraw value) asString).
+	! !
+
+
+!AccountSummary methodsFor: 'initialization' stamp: 'FLM 12/3/2021 14:56:49'!
+initializeFor: anAccount
+	
+	report := OrderedCollection new.
+	
+	anAccount forEachTransactionDo: [:aTransaction| aTransaction visitedByReport: self].
+
+	report add: ('Balance = ' , (anAccount balance) asString ).
+	
+	^report! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'AccountSummary class' category: 'ServiciosFinancieros-Ejercicio2'!
 AccountSummary class
 	instanceVariableNames: ''!
 
-!AccountSummary class methodsFor: 'as yet unclassified' stamp: 'FLM 12/2/2021 21:24:13'!
+!AccountSummary class methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 14:46:30'!
 of: anAccount
-	|accountSummary |
-	
-	accountSummary := OrderedCollection new.
-	
-	anAccount forEachTransactionDo: [:aTransaction| accountSummary add: (aTransaction infoAsString)].
-
-	accountSummary add: ('Balance = ' , (anAccount balance) asString ).
-	
-	^accountSummary ! !
+	^self new initializeFor: anAccount.! !
 
 
 !classDefinition: #TransferNet category: 'ServiciosFinancieros-Ejercicio2'!
 Report subclass: #TransferNet
-	instanceVariableNames: ''
+	instanceVariableNames: 'net'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
+
+!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:59:20'!
+processDeposit: aDeposit
+	! !
+
+!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 15:00:06'!
+processTransferDeposit: aTransferDeposit
+	net := net + aTransferDeposit balanceValue.
+	! !
+
+!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 15:00:22'!
+processTransferWithdraw: aTransferWithdraw
+	net := net + aTransferWithdraw balanceValue.
+	! !
+
+!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:59:28'!
+processWithdraw: aWithdraw
+	! !
+
+
+!TransferNet methodsFor: 'initialization' stamp: 'FLM 12/3/2021 15:00:51'!
+initializeFor: anAccount
+	net := 0 * peso.
+	anAccount forEachTransactionDo: [:aTransaction| aTransaction visitedByReport: self].
+	^ report := OrderedCollection with: ('Neto de transferencias = ', net asString ).! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1273,12 +1334,9 @@ Report subclass: #TransferNet
 TransferNet class
 	instanceVariableNames: ''!
 
-!TransferNet class methodsFor: 'as yet unclassified' stamp: 'FLM 12/2/2021 21:32:54'!
+!TransferNet class methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 14:58:08'!
 of: anAccount
-	|net|
-	net := 0 * peso.
-	anAccount forEachTransactionDo: [:aTransaction| net := net + ((aTransaction isKindOf: TransferLeg)  ifTrue:[ aTransaction balanceValue ]ifFalse:[0*peso])].
-	^ OrderedCollection with: ('Neto de transferencias = ', net asString ).! !
+	^self new initializeFor: anAccount.! !
 
 
 !classDefinition: #Transfer category: 'ServiciosFinancieros-Ejercicio2'!
