@@ -811,10 +811,70 @@ test07
 	 
 	! !
 
+
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:36:07'!
+test01ptp
+	|aPortfolio report|
+	aPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
+	report := PortfolioTreePrinter of: aPortfolio.
+	
+	self assert: (report size) equals: 1.
+	self assert: (report at:1)equals:'Portfolio de la familia Villegas'.! !
+
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:35:53'!
+test02ptp
+	|aPortfolio anAccount report|
+	aPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
+	anAccount := ReceptiveAccount named: 'Cuenta de Maria'.
+	aPortfolio registerAccount: anAccount.
+	report := PortfolioTreePrinter of: aPortfolio.
+	
+	self assert: (report size) equals: 2.
+	self assert: (report at:1)equals:'Portfolio de la familia Villegas'.
+	self assert:  (report at:2) equals: '   Cuenta de Maria'.! !
+
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:48:44'!
+test03ptp
+	|aPortfolio firstChildAccount childPortfolio report|
+	aPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
+	firstChildAccount := ReceptiveAccount named: 'Cuenta de Maria'.
+	aPortfolio registerAccount: firstChildAccount .
+	childPortfolio := Portfolio named: 'Portfolio de hijos'.
+	aPortfolio registerAccount: childPortfolio .
+	report := PortfolioTreePrinter of: aPortfolio.
+	
+	self assert: (report size) equals: 3.
+	self assert: (report at:1)equals:'Portfolio de la familia Villegas'.
+	self assert:  (report at:2) equals: '   Cuenta de Maria'.
+	self assert:  (report at:3) equals: '   Portfolio de hijos'.! !
+
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:54:15'!
+test04ptp
+	|mainPortfolio mariasAccount firstChildAccount  secondChildAccount childrenPortfolio report|
+	mainPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
+	mariasAccount := ReceptiveAccount named: 'Cuenta de Maria'.
+	mainPortfolio registerAccount: mariasAccount .
+	
+	childrenPortfolio := Portfolio named: 'Portfolio de hijos'.
+	firstChildAccount  := ReceptiveAccount named: 'Cuenta de Juan'.
+	secondChildAccount  := ReceptiveAccount named: 'Cuenta de Angeles'.
+	childrenPortfolio registerAccount: firstChildAccount.
+	childrenPortfolio registerAccount: secondChildAccount.
+	
+	mainPortfolio registerAccount: childrenPortfolio .
+	report := PortfolioTreePrinter of: mainPortfolio .
+	
+	self assert: (report size) equals: 5.
+	self assert: (report at:1)equals:'Portfolio de la familia Villegas'.
+	self assert:  (report at:2) equals: '   Cuenta de Maria'.
+	self assert:  (report at:3) equals: '   Portfolio de hijos'.
+	self assert:  (report at:4) equals: '      Cuenta de Juan'.
+	self assert:  (report at:5) equals: '      Cuenta de Angeles'.! !
+
 
 !classDefinition: #Account category: 'ServiciosFinancieros-Ejercicio2'!
 Object subclass: #Account
-	instanceVariableNames: ''
+	instanceVariableNames: 'name'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
@@ -830,6 +890,10 @@ forEachTransactionDo: aBlock
 !Account methodsFor: 'main protocol' stamp: 'LEI 11/30/2021 15:48:18'!
 hasRegistered: aTransaction
 	self subclassResponsibility .! !
+
+!Account methodsFor: 'main protocol' stamp: 'FLM 12/3/2021 15:34:04'!
+name
+	self  subclassResponsibility.! !
 
 !Account methodsFor: 'main protocol' stamp: 'LEI 11/30/2021 15:47:21'!
 transactions
@@ -861,15 +925,9 @@ hasRegistered: aTransaction
 		i := i+1].
 	^registrado .! !
 
-!Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/29/2021 18:24:06'!
-registerAccount: anAccount
-	
-	(anAccount canBeIncludedIn: self) ifTrue:[
-		
-		anAccount hasBeenRegisteredInPortfolio: self.
-		registeredAccounts add: anAccount.
-		].
-	! !
+!Portfolio methodsFor: 'main protocol' stamp: 'FLM 12/3/2021 15:34:08'!
+name
+	^name.! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/28/2021 14:54:05'!
 transactions
@@ -885,6 +943,30 @@ initialize
 	registeredAccounts := OrderedCollection new.
 	parents := OrderedCollection new.! !
 
+!Portfolio methodsFor: 'initialization' stamp: 'FLM 12/3/2021 15:15:11'!
+initializeWithName: accountName.
+
+	registeredAccounts := OrderedCollection new.
+	parents := OrderedCollection new.
+	name := accountName.! !
+
+!Portfolio methodsFor: 'initialization' stamp: 'FLM 12/3/2021 15:16:45'!
+initializeWithName: accountName with: childAccount
+
+	registeredAccounts := OrderedCollection new.
+	parents := OrderedCollection new.
+	name := accountName.
+	self registerAccount: childAccount.! !
+
+!Portfolio methodsFor: 'initialization' stamp: 'FLM 12/3/2021 15:17:24'!
+initializeWithName: accountName with: childAccount with: anotherChildAccount
+
+	registeredAccounts := OrderedCollection new.
+	parents := OrderedCollection new.
+	name := accountName.
+	self registerAccount: childAccount.
+	self registerAccount: anotherChildAccount.! !
+
 
 !Portfolio methodsFor: 'for portfolio' stamp: 'FLM 11/29/2021 18:35:45'!
 canBeIncludedIn: aPortfolio
@@ -896,6 +978,16 @@ canBeIncludedIn: aPortfolio
 	
 	^true.
 	! !
+
+!Portfolio methodsFor: 'for portfolio' stamp: 'FLM 12/3/2021 16:01:11'!
+forEachChildAccountDo: aBlock
+	registeredAccounts do:[:anAccount|
+		aBlock value: anAccount.
+		(anAccount isKindOf: Portfolio) ifTrue:[anAccount forEachChildAccountDo: aBlock]].! !
+
+!Portfolio methodsFor: 'for portfolio' stamp: 'FLM 12/3/2021 16:26:47'!
+forEachDirectChildAccountDo: aBlock
+	registeredAccounts do:[:anAccount|		aBlock value: anAccount.].! !
 
 !Portfolio methodsFor: 'for portfolio' stamp: 'FLM 11/29/2021 18:23:54'!
 hasBeenRegisteredInPortfolio: aPortofolio
@@ -913,27 +1005,50 @@ includesAccountInParents: anAccount
 	parents do:[:element| (element includesAccount: anAccount) ifTrue:[^true] ].
 	^false.! !
 
+!Portfolio methodsFor: 'for portfolio' stamp: 'FLM 11/29/2021 18:24:06'!
+registerAccount: anAccount
+	
+	(anAccount canBeIncludedIn: self) ifTrue:[
+		
+		anAccount hasBeenRegisteredInPortfolio: self.
+		registeredAccounts add: anAccount.
+		].
+	! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Portfolio class' category: 'ServiciosFinancieros-Ejercicio2'!
 Portfolio class
 	instanceVariableNames: ''!
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 16:51:02'!
+!Portfolio class methodsFor: 'error messages' stamp: 'FLM 11/28/2021 16:51:02'!
 cannotRegisterAPortfolioIfItContainsAnExistingAccountInParentPorfolioErrorMessage
 	^ 'Cannot register a portfolio if it contains an existing account in parent porfolio!!'.! !
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 15:09:46'!
+!Portfolio class methodsFor: 'error messages' stamp: 'FLM 11/28/2021 15:09:46'!
 cannotRegisterDuplicateAccountsErrorMessage
 	^ 'Cannot register this account!! It already exists in this portfolio!!'.! !
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'FLM 11/29/2021 18:34:49'!
+!Portfolio class methodsFor: 'error messages' stamp: 'FLM 11/29/2021 18:34:49'!
 cannotRegisterDuplicatePortfoliosErrorMessage
 	^'Cannot register duplicated portfolios!!'.! !
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'FLM 11/28/2021 15:53:21'!
+!Portfolio class methodsFor: 'error messages' stamp: 'FLM 11/28/2021 15:53:21'!
 portfolioCannotRegisterItselfErrorMessage
 	^ 'A portfolio cannot register itself'.! !
+
+
+!Portfolio class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 15:14:48'!
+named: accountName
+	^self new initializeWithName: accountName.! !
+
+!Portfolio class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 15:16:09'!
+named: accountName with: childAccount
+	^self new initializeWithName: accountName with: childAccount .! !
+
+!Portfolio class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 15:17:39'!
+named: accountName with: childAccount with: anotherChildAccount
+	^self new initializeWithName: accountName with: childAccount with: anotherChildAccount .! !
 
 
 !classDefinition: #ReceptiveAccount category: 'ServiciosFinancieros-Ejercicio2'!
@@ -947,6 +1062,11 @@ Account subclass: #ReceptiveAccount
 initialize
 
 	transactions := OrderedCollection new.! !
+
+!ReceptiveAccount methodsFor: 'initialization' stamp: 'FLM 12/3/2021 15:19:25'!
+initializeWithName: accountName
+	transactions := OrderedCollection new.
+	name := accountName.! !
 
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'LEI 11/30/2021 15:01:38'!
@@ -964,11 +1084,9 @@ hasRegistered: aTransaction
 	^ transactions includes: aTransaction 
 ! !
 
-!ReceptiveAccount methodsFor: 'main protocol' stamp: 'HernanWilkinson 7/13/2011 18:37'!
-register: aTransaction
-
-	transactions add: aTransaction 
-! !
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'FLM 12/3/2021 15:34:11'!
+name
+	^name.! !
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'HernanWilkinson 7/13/2011 18:37'!
 transactions 
@@ -990,6 +1108,23 @@ hasBeenRegisteredInPortfolio: aPortfolio
 includesAccount: anAccount
 	^anAccount  = self.! !
 
+
+!ReceptiveAccount methodsFor: 'receptive account' stamp: 'HernanWilkinson 7/13/2011 18:37'!
+register: aTransaction
+
+	transactions add: aTransaction 
+! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'ReceptiveAccount class' category: 'ServiciosFinancieros-Ejercicio2'!
+ReceptiveAccount class
+	instanceVariableNames: ''!
+
+!ReceptiveAccount class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 15:24:04'!
+named: accountName
+	^self new initializeWithName: accountName.! !
+
 
 !classDefinition: #AccountTransaction category: 'ServiciosFinancieros-Ejercicio2'!
 Object subclass: #AccountTransaction
@@ -1005,12 +1140,6 @@ balanceValue
 
 !AccountTransaction methodsFor: 'value' stamp: 'HernanWilkinson 9/12/2011 12:25'!
 value 
-
-	self subclassResponsibility ! !
-
-
-!AccountTransaction methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 15:28:40'!
-infoAsString
 
 	self subclassResponsibility ! !
 
@@ -1083,6 +1212,10 @@ AccountTransaction subclass: #TransferLeg
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
+!TransferLeg methodsFor: 'transfer' stamp: 'FLM 12/3/2021 15:04:23'!
+counterpart
+	self subclassResponsibility.! !
+
 
 !classDefinition: #TransferDeposit category: 'ServiciosFinancieros-Ejercicio2'!
 TransferLeg subclass: #TransferDeposit
@@ -1091,28 +1224,30 @@ TransferLeg subclass: #TransferDeposit
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'FLM 11/23/2021 12:44:09'!
-balanceValue
-	^value.! !
+!TransferDeposit methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:55:25'!
+visitedByReport: aReport
+	aReport processTransferDeposit: self.! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:32:27'!
+
+!TransferDeposit methodsFor: 'transfer' stamp: 'FLM 11/25/2021 20:32:27'!
 counterpart
 	^ transfer withdrawLeg .! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:31:56'!
-initializeWithValue: aValue fromTransfer: aTransfer
-	value := aValue.
-	transfer := aTransfer.! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 15:23:31'!
+!TransferDeposit methodsFor: 'value' stamp: 'FLM 11/23/2021 12:44:09'!
+balanceValue
+	^value.! !
+
+!TransferDeposit methodsFor: 'value' stamp: 'LEI 11/30/2021 15:23:31'!
 value
 
 	^ value! !
 
 
-!TransferDeposit methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:55:25'!
-visitedByReport: aReport
-	aReport processTransferDeposit: self.! !
+!TransferDeposit methodsFor: 'initialization' stamp: 'FLM 11/25/2021 20:31:56'!
+initializeWithValue: aValue fromTransfer: aTransfer
+	value := aValue.
+	transfer := aTransfer.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1135,28 +1270,30 @@ TransferLeg subclass: #TransferWithdraw
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'FLM 11/23/2021 12:44:20'!
-balanceValue
-	^ value negated! !
+!TransferWithdraw methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:55:49'!
+visitedByReport: aReport
+	aReport processTransferWithdraw: self.! !
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:33:25'!
+
+!TransferWithdraw methodsFor: 'transfer' stamp: 'FLM 11/25/2021 20:33:25'!
 counterpart
 	^ transfer depositLeg .! !
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'FLM 11/25/2021 20:33:13'!
-initializeWithValue: aValue fromTransfer: aTransfer
-	value := aValue.
-	transfer := aTransfer.! !
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 15:23:38'!
+!TransferWithdraw methodsFor: 'value' stamp: 'FLM 11/23/2021 12:44:20'!
+balanceValue
+	^ value negated! !
+
+!TransferWithdraw methodsFor: 'value' stamp: 'LEI 11/30/2021 15:23:38'!
 value
 
 	^ value! !
 
 
-!TransferWithdraw methodsFor: 'for reports' stamp: 'FLM 12/3/2021 14:55:49'!
-visitedByReport: aReport
-	aReport processTransferWithdraw: self.! !
+!TransferWithdraw methodsFor: 'initialization' stamp: 'FLM 11/25/2021 20:33:13'!
+initializeWithValue: aValue fromTransfer: aTransfer
+	value := aValue.
+	transfer := aTransfer.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1241,7 +1378,7 @@ processWithdraw: aWithdraw
 Report class
 	instanceVariableNames: ''!
 
-!Report class methodsFor: 'as yet unclassified' stamp: 'FLM 12/2/2021 21:05:23'!
+!Report class methodsFor: 'instance creation' stamp: 'FLM 12/2/2021 21:05:23'!
 of: anAccount
 	self subclassResponsibility.! !
 
@@ -1291,9 +1428,53 @@ initializeFor: anAccount
 AccountSummary class
 	instanceVariableNames: ''!
 
-!AccountSummary class methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 14:46:30'!
+!AccountSummary class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 14:46:30'!
 of: anAccount
 	^self new initializeFor: anAccount.! !
+
+
+!classDefinition: #PortfolioTreePrinter category: 'ServiciosFinancieros-Ejercicio2'!
+Report subclass: #PortfolioTreePrinter
+	instanceVariableNames: 'numberOfTabs'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio2'!
+
+!PortfolioTreePrinter methodsFor: 'initialization' stamp: 'FLM 12/3/2021 16:50:09'!
+initializeWith: aPortfolio
+	report := OrderedCollection new.
+	numberOfTabs  := 0.
+	self addAccountsNameFromPortfolio: aPortfolio.
+	^report.! !
+
+
+!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 16:54:03'!
+addAccountsNameFromPortfolio: aPortfolio
+	report add: (self tabs,aPortfolio name).
+	numberOfTabs := numberOfTabs +1.
+	aPortfolio forEachDirectChildAccountDo: [:childAccount| 
+			'childAccount visitedByReport: self'.
+			(childAccount isKindOf: Portfolio)ifTrue:[self addAccountsNameFromPortfolio: childAccount].
+			(childAccount isKindOf: ReceptiveAccount )ifTrue: [report add: (self tabs,childAccount name).].
+		].
+	numberOfTabs := numberOfTabs - 1.! !
+
+!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 16:38:33'!
+tabs
+	|tabs|
+	tabs:=''.
+	(1 to: numberOfTabs ) do:[:i| tabs := ('   ',tabs)].
+	^tabs.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'PortfolioTreePrinter class' category: 'ServiciosFinancieros-Ejercicio2'!
+PortfolioTreePrinter class
+	instanceVariableNames: ''!
+
+!PortfolioTreePrinter class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 15:42:19'!
+of: anAccount
+	^self new initializeWith: anAccount.! !
 
 
 !classDefinition: #TransferNet category: 'ServiciosFinancieros-Ejercicio2'!
@@ -1334,7 +1515,7 @@ initializeFor: anAccount
 TransferNet class
 	instanceVariableNames: ''!
 
-!TransferNet class methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 14:58:08'!
+!TransferNet class methodsFor: 'instance creation' stamp: 'FLM 12/3/2021 14:58:08'!
 of: anAccount
 	^self new initializeFor: anAccount.! !
 
