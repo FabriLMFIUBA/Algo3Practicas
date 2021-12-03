@@ -512,18 +512,19 @@ TestCase subclass: #ReportTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 11/30/2021 16:03:20'!
+!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:06:29'!
 test01tn
 	|anAccount transferNet |
 	
 	anAccount := ReceptiveAccount new.
-	transferNet := anAccount transferNetTransaction.
+	transferNet := TransferNet of: anAccount .
 	
-	self assert: transferNet equals: 0 * peso.
+	self assert:(transferNet size) equals: 1.
+	self assert: (transferNet at: 1) equals: 'Neto de transferencias = 0 pesos'.
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 11/30/2021 16:08:56'!
+!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:06:36'!
 test02tn
 
 
@@ -535,16 +536,17 @@ test02tn
 	Transfer from: anAccount to: anotherAccount for: 10 * peso.
 	Transfer from: anotherAccount to: anAccount for: 20 * peso.
 	
-	transferNet := anAccount  transferNetTransaction.
+	transferNet := TransferNet of: anAccount ..
 	
-	self assert: transferNet equals: 10 * peso.
+	self assert:(transferNet size) equals: 1.
+	self assert: (transferNet at: 1) equals: 'Neto de transferencias = 10 pesos'.
 	
 	
 	
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 11/30/2021 16:33:25'!
+!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:06:54'!
 test03tn
 
 
@@ -557,18 +559,21 @@ test03tn
 	Transfer from: anAccount to: anotherAccount for: 10 * peso.
 	Transfer from: anotherAccount to: anAccount for: 20 * peso.
 	
-	transferNet := anAccount  transferNetTransaction.
-	transferNetAnotherAccount := anotherAccount transferNetTransaction .
+	transferNet := TransferNet of: anAccount ..
+	transferNetAnotherAccount := TransferNet of: anotherAccount .
 	
-	self assert: transferNet equals: 10 * peso.
-	self assert: transferNetAnotherAccount equals: -10*peso
+	self assert:(transferNet size) equals: 1.
+	self assert: (transferNet at: 1) equals: 'Neto de transferencias = 10 pesos'.
+	
+	self assert:(transferNetAnotherAccount size) equals: 1.
+	self assert: (transferNetAnotherAccount at: 1) equals: 'Neto de transferencias = -10 pesos'.
 	
 	
 	
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 11/30/2021 16:35:00'!
+!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:07:03'!
 test04tn
 
 
@@ -577,17 +582,18 @@ test04tn
 	mainPortfolio := Portfolio new.
 
 
-	transferNet := mainPortfolio  transferNetTransaction.
+	transferNet := TransferNet of: mainPortfolio .
 
 	
-	self assert: transferNet equals: 0 * peso.
+	self assert:(transferNet size) equals: 1.
+	self assert: (transferNet at: 1) equals: 'Neto de transferencias = 0 pesos'.
 
 	
 	
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 11/30/2021 16:46:29'!
+!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:07:18'!
 test05tn
 
 
@@ -610,9 +616,10 @@ test05tn
 	mainPortfolio registerAccount: anAccount.
 	
 	
-	transferNet := mainPortfolio  transferNetTransaction.
+	transferNet := TransferNet of: mainPortfolio.
 
-	self assert: transferNet equals: 10 * peso.
+	self assert:(transferNet size) equals: 1.
+	self assert: (transferNet at: 1) equals: 'Neto de transferencias = 10 pesos'.
 	
 	
 	
@@ -620,7 +627,7 @@ test05tn
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 11/30/2021 16:45:41'!
+!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:07:27'!
 test06tn
 
 
@@ -644,9 +651,10 @@ test06tn
 	aPortfolio registerAccount: auxAccount.
 	mainPortfolio registerAccount: aPortfolio.
 	
-	transferNet := mainPortfolio  transferNetTransaction.
+	transferNet := TransferNet of: mainPortfolio.
 
-	self assert: transferNet equals: 35 * peso.
+	self assert:(transferNet size) equals: 1.
+	self assert: (transferNet at: 1) equals: 'Neto de transferencias = 35 pesos'.
 	
 	
 	
@@ -655,18 +663,18 @@ test06tn
 	! !
 
 
-!ReportTest methodsFor: 'summary test' stamp: 'LEI 11/30/2021 15:56:20'!
+!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:11'!
 test01
 
 | 	accountSumary anAccount |
 	anAccount := ReceptiveAccount new.
 	
-	accountSumary:= anAccount summary.
+	accountSumary:= AccountSummary of: anAccount .
 	
 	self assert: accountSumary size equals: 1.
 	self assert: (accountSumary at: 1) equals: 'Balance = 0 pesos'.! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'LEI 11/30/2021 14:59:41'!
+!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:17'!
 test02
 	
 	| accountSumary anAccount |
@@ -674,7 +682,7 @@ test02
 	
 	Deposit register: 100 * peso on: anAccount.
 	
-	accountSumary := anAccount summary.
+	accountSumary := AccountSummary of: anAccount.
 	
 	self assert: accountSumary size equals: 2.
 	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
@@ -682,7 +690,7 @@ test02
 	
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'LEI 11/30/2021 15:24:56'!
+!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:22'!
 test03
 	
 	| accountSumary anAccount anotherAccount |
@@ -695,7 +703,7 @@ test03
 	Transfer from: anotherAccount to: anAccount for: 15 * peso.
 	
 	
-	accountSumary := anAccount summary .
+	accountSumary := AccountSummary of: anAccount.
 	
 	self assert: accountSumary size equals: 5.
 	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
@@ -706,7 +714,7 @@ test03
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'LEI 11/30/2021 15:34:37'!
+!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:31'!
 test04
 	
 	| accountSumary mainPortfolio |
@@ -715,14 +723,14 @@ test04
 	
 
 	
-	accountSumary := mainPortfolio summary .
+	accountSumary := AccountSummary of: mainPortfolio .
 	
 	self assert: accountSumary size equals: 1.
 	self assert: (accountSumary at: 1) equals: 'Balance = 0 pesos'.
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'LEI 11/30/2021 15:43:39'!
+!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:43'!
 test05
 	
 	| accountSumary mainPortfolio anAccount anotherAccount |
@@ -737,7 +745,7 @@ test05
 	mainPortfolio  registerAccount: anotherAccount .
 
 	
-	accountSumary := mainPortfolio summary .
+	accountSumary := AccountSummary of: mainPortfolio .
 	
 	self assert: accountSumary size equals: 3.
 	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
@@ -746,7 +754,7 @@ test05
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'LEI 11/30/2021 15:51:23'!
+!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:51'!
 test06
 	
 	| accountSumary mainPortfolio aPortfolio anAccount anotherAccount |
@@ -764,7 +772,7 @@ test06
 	mainPortfolio registerAccount: aPortfolio .
 
 	
-	accountSumary := mainPortfolio summary .
+	accountSumary := AccountSummary of: mainPortfolio .
 	
 	self assert: accountSumary size equals: 3.
 	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
@@ -773,7 +781,7 @@ test06
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'LEI 11/30/2021 15:54:12'!
+!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:09:02'!
 test07
 	
 	| accountSumary mainPortfolio aPortfolio anotherPortfolio anAccount anotherAccount |
@@ -794,40 +802,13 @@ test07
 	
 
 	
-	accountSumary := mainPortfolio summary .
+	accountSumary := AccountSummary of: mainPortfolio .
 	
 	self assert: accountSumary size equals: 3.
 	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
 	self assert: (accountSumary at: 2) equals: 'Extraccion por 75 pesos'.
 	self assert: (accountSumary at: 3) equals: 'Balance = 25 pesos'.
 	 
-	! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'ReportTest class' category: 'ServiciosFinancieros-Ejercicio2'!
-ReportTest class
-	instanceVariableNames: ''!
-
-!ReportTest class methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 14:51:37'!
-test01
-
-	| anAccount  accountSummary |
-	
-	anAccount:= ReceptiveAccount  new.
-	
-	
-! !
-
-!ReportTest class methodsFor: 'as yet unclassified' stamp: 'LEI 11/30/2021 14:51:49'!
-test02
-
-	| anAccount  accountSummary |
-	
-	anAccount:= ReceptiveAccount  new.
-	
-	Deposit register: 100 * peso on: anAccount .
-	
 	! !
 
 
@@ -838,34 +819,12 @@ Object subclass: #Account
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!Account methodsFor: 'reports' stamp: 'LEI 11/30/2021 15:47:05'!
-summary
-	|accountSummary |
-	
-	accountSummary := OrderedCollection new.
-	
-	
-	self transactions do:[: aTranstaction | 
-		
-			accountSummary add: aTranstaction infoAsString.
-			
-		].
-
-	accountSummary add: ('Balance = ' , (self balance) asString ).
-	
-	^accountSummary ! !
-
-!Account methodsFor: 'reports' stamp: 'LEI 11/30/2021 16:54:42'!
-transferNetTransaction
-	
-	^(self transactions) sum:[:aTrasaction|
-		((aTrasaction isKindOf: TransferDeposit) or: [aTrasaction isKindOf: TransferWithdraw]) ifTrue:[ aTrasaction balanceValue ]ifFalse:[0*peso].
-		
-		]ifEmpty: [0 * peso]! !
-
-
 !Account methodsFor: 'main protocol' stamp: 'LEI 11/30/2021 15:47:26'!
 balance
+	self subclassResponsibility.! !
+
+!Account methodsFor: 'main protocol' stamp: 'FLM 12/2/2021 21:22:02'!
+forEachTransactionDo: aBlock
 	self subclassResponsibility.! !
 
 !Account methodsFor: 'main protocol' stamp: 'LEI 11/30/2021 15:48:18'!
@@ -887,6 +846,10 @@ Account subclass: #Portfolio
 !Portfolio methodsFor: 'main protocol' stamp: 'LEI 11/30/2021 15:01:50'!
 balance
 	^registeredAccounts sum: [ :anAccount | anAccount balance.		] ifEmpty: [ 0 * peso ]! !
+
+!Portfolio methodsFor: 'main protocol' stamp: 'FLM 12/2/2021 21:24:55'!
+forEachTransactionDo: aBlock
+	registeredAccounts do:[:anAccount| anAccount forEachTransactionDo: aBlock].! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'FLM 11/27/2021 23:43:11'!
 hasRegistered: aTransaction
@@ -950,7 +913,6 @@ includesAccountInParents: anAccount
 	parents do:[:element| (element includesAccount: anAccount) ifTrue:[^true] ].
 	^false.! !
 
-
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Portfolio class' category: 'ServiciosFinancieros-Ejercicio2'!
@@ -992,6 +954,10 @@ balance
 
 	^transactions sum: [ :aTransaction | aTransaction balanceValue.		] ifEmpty: [ 0 * peso ]! !
 
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'FLM 12/2/2021 21:21:41'!
+forEachTransactionDo: aBlock
+	transactions do:[:aTransaction| aBlock value: aTransaction ].! !
+
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'NR 10/17/2019 03:28:43'!
 hasRegistered: aTransaction
 
@@ -1023,7 +989,6 @@ hasBeenRegisteredInPortfolio: aPortfolio
 !ReceptiveAccount methodsFor: 'for portfolio' stamp: 'FLM 11/28/2021 16:00:35'!
 includesAccount: anAccount
 	^anAccount  = self.! !
-
 
 
 !classDefinition: #AccountTransaction category: 'ServiciosFinancieros-Ejercicio2'!
@@ -1108,9 +1073,17 @@ for: aValue
 	^ self new initializeFor: aValue ! !
 
 
-!classDefinition: #TransferDeposit category: 'ServiciosFinancieros-Ejercicio2'!
-AccountTransaction subclass: #TransferDeposit
+!classDefinition: #TransferLeg category: 'ServiciosFinancieros-Ejercicio2'!
+AccountTransaction subclass: #TransferLeg
 	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio2'!
+
+
+!classDefinition: #TransferDeposit category: 'ServiciosFinancieros-Ejercicio2'!
+TransferLeg subclass: #TransferDeposit
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
@@ -1154,8 +1127,8 @@ register: aValue on: anAccount fromTransfer: aTransfer
 
 
 !classDefinition: #TransferWithdraw category: 'ServiciosFinancieros-Ejercicio2'!
-AccountTransaction subclass: #TransferWithdraw
-	instanceVariableNames: 'transfer'
+TransferLeg subclass: #TransferWithdraw
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
@@ -1241,6 +1214,71 @@ Withdraw class
 for: aValue
 
 	^ self new initializeFor: aValue ! !
+
+
+!classDefinition: #Report category: 'ServiciosFinancieros-Ejercicio2'!
+Object subclass: #Report
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio2'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Report class' category: 'ServiciosFinancieros-Ejercicio2'!
+Report class
+	instanceVariableNames: ''!
+
+!Report class methodsFor: 'as yet unclassified' stamp: 'FLM 12/2/2021 21:05:23'!
+of: anAccount
+	self subclassResponsibility.! !
+
+
+!classDefinition: #AccountSummary category: 'ServiciosFinancieros-Ejercicio2'!
+Report subclass: #AccountSummary
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio2'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'AccountSummary class' category: 'ServiciosFinancieros-Ejercicio2'!
+AccountSummary class
+	instanceVariableNames: ''!
+
+!AccountSummary class methodsFor: 'as yet unclassified' stamp: 'FLM 12/2/2021 21:24:13'!
+of: anAccount
+	|accountSummary |
+	
+	accountSummary := OrderedCollection new.
+	
+	anAccount forEachTransactionDo: [:aTransaction| accountSummary add: (aTransaction infoAsString)].
+
+	accountSummary add: ('Balance = ' , (anAccount balance) asString ).
+	
+	^accountSummary ! !
+
+
+!classDefinition: #TransferNet category: 'ServiciosFinancieros-Ejercicio2'!
+Report subclass: #TransferNet
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio2'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'TransferNet class' category: 'ServiciosFinancieros-Ejercicio2'!
+TransferNet class
+	instanceVariableNames: ''!
+
+!TransferNet class methodsFor: 'as yet unclassified' stamp: 'FLM 12/2/2021 21:32:54'!
+of: anAccount
+	|net|
+	net := 0 * peso.
+	anAccount forEachTransactionDo: [:aTransaction| net := net + ((aTransaction isKindOf: TransferLeg)  ifTrue:[ aTransaction balanceValue ]ifFalse:[0*peso])].
+	^ OrderedCollection with: ('Neto de transferencias = ', net asString ).! !
 
 
 !classDefinition: #Transfer category: 'ServiciosFinancieros-Ejercicio2'!
