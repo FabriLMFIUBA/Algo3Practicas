@@ -512,8 +512,13 @@ TestCase subclass: #ReportTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:06:29'!
-test01tn
+!ReportTest methodsFor: 'setUp' stamp: 'LEI 12/5/2021 23:09:50'!
+setUp
+! !
+
+
+!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 12/4/2021 16:12:59'!
+test01TNEmptyAccount
 	|anAccount transferNet |
 	
 	anAccount := ReceptiveAccount new.
@@ -524,8 +529,8 @@ test01tn
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:06:36'!
-test02tn
+!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 12/4/2021 16:11:15'!
+test02TNAccountWithOnlyTransferTransactions
 
 
 | 	anAccount anotherAccount transferNet |
@@ -546,8 +551,8 @@ test02tn
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:06:54'!
-test03tn
+!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 12/4/2021 16:11:48'!
+test03TNAccountWithManyTransactions
 
 
 | 	anAccount anotherAccount transferNet transferNetAnotherAccount |
@@ -573,8 +578,8 @@ test03tn
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:07:03'!
-test04tn
+!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 12/4/2021 16:12:44'!
+test04TNEmptyPortfolio
 
 
 | 	mainPortfolio  transferNet  |
@@ -593,8 +598,8 @@ test04tn
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:07:18'!
-test05tn
+!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 12/4/2021 16:13:50'!
+test05TNPortfolioWithAcountThatOnlyHasTransferTransactions
 
 
 	|mainPortfolio anAccount anotherAccount  transferNet |
@@ -627,8 +632,8 @@ test05tn
 	
 	! !
 
-!ReportTest methodsFor: 'transfer net test' stamp: 'FLM 12/2/2021 21:07:27'!
-test06tn
+!ReportTest methodsFor: 'transfer net test' stamp: 'LEI 12/4/2021 16:21:52'!
+test06TNPortfolioWithanAccountAndAportfolioWithAnAccount
 
 
 	|mainPortfolio aPortfolio anAccount anotherAccount auxAccount transferNet |
@@ -663,19 +668,19 @@ test06tn
 	! !
 
 
-!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:11'!
-test01
+!ReportTest methodsFor: 'summary test' stamp: 'LEI 12/4/2021 16:43:03'!
+test01SummaryOfAnEmptyAccount
 
 | 	accountSumary anAccount |
-	anAccount := ReceptiveAccount new.
 	
+	anAccount := ReceptiveAccount new.
 	accountSumary:= AccountSummary of: anAccount .
 	
 	self assert: accountSumary size equals: 1.
 	self assert: (accountSumary at: 1) equals: 'Balance = 0 pesos'.! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:17'!
-test02
+!ReportTest methodsFor: 'summary test' stamp: 'LEI 12/4/2021 15:16:49'!
+test02SummaryOfAnAccountWithATransaction
 	
 	| accountSumary anAccount |
 	anAccount := ReceptiveAccount new.
@@ -690,8 +695,8 @@ test02
 	
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:22'!
-test03
+!ReportTest methodsFor: 'summary test' stamp: 'LEI 12/4/2021 16:00:32'!
+test03SummaryOfAnAccountWithManyTransaction
 	
 	| accountSumary anAccount anotherAccount |
 	anAccount := ReceptiveAccount new.
@@ -714,8 +719,8 @@ test03
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:31'!
-test04
+!ReportTest methodsFor: 'summary test' stamp: 'LEI 12/4/2021 16:02:09'!
+test04SummaryOfAnEmptyPortfolio
 	
 	| accountSumary mainPortfolio |
 	mainPortfolio := Portfolio new.
@@ -730,8 +735,8 @@ test04
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:43'!
-test05
+!ReportTest methodsFor: 'summary test' stamp: 'LEI 12/4/2021 16:04:57'!
+test05SummaryOfAportfolioWithAnAccontWithTrasactions
 	
 	| accountSumary mainPortfolio anAccount anotherAccount |
 	mainPortfolio := Portfolio new.
@@ -754,8 +759,8 @@ test05
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:08:51'!
-test06
+!ReportTest methodsFor: 'summary test' stamp: 'LEI 12/4/2021 16:06:12'!
+test06SummaryOfAPortfolioWithAnAccountAndPortfolioWihAnAccount
 	
 	| accountSumary mainPortfolio aPortfolio anAccount anotherAccount |
 	mainPortfolio := Portfolio new.
@@ -781,8 +786,8 @@ test06
 	 
 	! !
 
-!ReportTest methodsFor: 'summary test' stamp: 'FLM 12/2/2021 21:09:02'!
-test07
+!ReportTest methodsFor: 'summary test' stamp: 'LEI 12/4/2021 16:07:05'!
+test07SummaryWithPortfoliosWithPorfoliosThatHaveAccounts
 	
 	| accountSumary mainPortfolio aPortfolio anotherPortfolio anAccount anotherAccount |
 	mainPortfolio := Portfolio new.
@@ -812,8 +817,8 @@ test07
 	! !
 
 
-!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:36:07'!
-test01ptp
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'LEI 12/4/2021 16:27:53'!
+test01PTPEmptyPortfolio
 	|aPortfolio report|
 	aPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
 	report := PortfolioTreePrinter of: aPortfolio.
@@ -821,8 +826,8 @@ test01ptp
 	self assert: (report size) equals: 1.
 	self assert: (report at:1)equals:'Portfolio de la familia Villegas'.! !
 
-!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:35:53'!
-test02ptp
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'LEI 12/4/2021 16:29:21'!
+test02PTPPortfolioWithAnAccount
 	|aPortfolio anAccount report|
 	aPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
 	anAccount := ReceptiveAccount named: 'Cuenta de Maria'.
@@ -833,8 +838,8 @@ test02ptp
 	self assert: (report at:1)equals:'Portfolio de la familia Villegas'.
 	self assert:  (report at:2) equals: '   Cuenta de Maria'.! !
 
-!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:48:44'!
-test03ptp
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'LEI 12/4/2021 16:30:36'!
+test03PTPPortfolioWithAnAccountAndAnotherPortfolio
 	|aPortfolio firstChildAccount childPortfolio report|
 	aPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
 	firstChildAccount := ReceptiveAccount named: 'Cuenta de Maria'.
@@ -848,8 +853,8 @@ test03ptp
 	self assert:  (report at:2) equals: '   Cuenta de Maria'.
 	self assert:  (report at:3) equals: '   Portfolio de hijos'.! !
 
-!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'FLM 12/3/2021 15:54:15'!
-test04ptp
+!ReportTest methodsFor: 'portfolio tree printer test' stamp: 'LEI 12/4/2021 16:32:03'!
+test04PTPPorfolioWihAnAccountAndAnotherPortfolioThatHasAccounts
 	|mainPortfolio mariasAccount firstChildAccount  secondChildAccount childrenPortfolio report|
 	mainPortfolio := Portfolio named: 'Portfolio de la familia Villegas'.
 	mariasAccount := ReceptiveAccount named: 'Cuenta de Maria'.
@@ -872,8 +877,8 @@ test04ptp
 	self assert:  (report at:5) equals: '      Cuenta de Angeles'.! !
 
 
-!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'FLM 12/3/2021 17:24:44'!
-test01pdtp
+!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'LEI 12/4/2021 16:36:51'!
+test01PDTPEmptyPortfolio
 	|mainPortfolio report|
 	
 	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
@@ -885,8 +890,8 @@ test01pdtp
 	self assert:(report at:1) equals: 'Portfolio familia Vallejos'.
 	self assert:(report at:2) equals: '   Balance = 0 pesos'.! !
 
-!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'FLM 12/3/2021 17:31:23'!
-test02pdtp
+!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'LEI 12/4/2021 16:37:58'!
+test02PDTPPortfolioWithAnEmptyAccount
 	|mainPortfolio anAccount report|
 	
 	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
@@ -901,8 +906,8 @@ test02pdtp
 	self assert:(report at:3) equals: '      Balance = 0 pesos'.
 	self assert:(report at:4) equals: '   Balance = 0 pesos'.! !
 
-!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'FLM 12/3/2021 17:43:49'!
-test03pdtp
+!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'LEI 12/4/2021 16:38:22'!
+test03PDTPPortfolioWithAccountThatHasTransactions
 	|mainPortfolio anAccount auxAccount report|
 	
 	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
@@ -923,10 +928,246 @@ test03pdtp
 	self assert:(report at:2) equals: '   Cuenta de Maria'.
 	self assert:(report at:3) equals: '      Deposito por 100 pesos'.
 	self assert:(report at:4) equals: '      Extraccion por 150 pesos'.
-	self assert:(report at:5) equals: '      Entrada por transferencia por 50 pesos'.
-	self assert:(report at:6) equals: '      Salida por transferencia por 250 pesos'.
+	self assert:(report at:5) equals: '      Entrada por transferencia de 50 pesos'.
+	self assert:(report at:6) equals: '      Salida por transferencia de 250 pesos'.
 	self assert:(report at:7) equals: '      Balance = -250 pesos'.
 	self assert:(report at:8) equals: '   Balance = -250 pesos'.! !
+
+!ReportTest methodsFor: 'portfolio detailed tree printer test' stamp: 'LEI 12/5/2021 22:41:56'!
+test04PDTP
+
+	|mainPortfolio mariasAccount childrenPortfolio juansAccount josesAccount report|
+	
+	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
+	mariasAccount := ReceptiveAccount named: 'Cuenta de Maria'.
+	Deposit register: 100* peso on: mariasAccount.
+	Withdraw register: 150* peso on: mariasAccount.
+	mainPortfolio registerAccount: mariasAccount.
+	
+	juansAccount := ReceptiveAccount named: 'Cuenta de Juan'.
+	Transfer from: juansAccount to: mariasAccount for: 50*peso.
+	 Transfer from: mariasAccount to: juansAccount for: 250*peso.
+	
+	childrenPortfolio := Portfolio named: 'Portfolio de hijos' with:juansAccount .
+	mainPortfolio registerAccount: childrenPortfolio.
+	
+	josesAccount := ReceptiveAccount named: 'Cuenta de Jose'.
+	Withdraw register: 20*peso on: josesAccount.
+	mainPortfolio registerAccount: josesAccount .
+	
+	
+	report := PortfolioDetailedTreePrinter of:mainPortfolio.
+	
+	self assert: report size equals: 17.
+	
+	self assert:(report at:1) equals: 'Portfolio familia Vallejos'.
+	self assert:(report at:2) equals: '   Cuenta de Maria'.
+	self assert:(report at:3) equals: '      Deposito por 100 pesos'.
+	self assert:(report at:4) equals: '      Extraccion por 150 pesos'.
+	self assert:(report at:5) equals: '      Entrada por transferencia de 50 pesos'.
+	self assert:(report at:6) equals: '      Salida por transferencia de 250 pesos'.
+	self assert:(report at:7) equals: '      Balance = -250 pesos'.
+	self assert:(report at:8) equals: '   Portfolio de hijos'.
+	self assert:(report at:9) equals: '      Cuenta de Juan'.
+	self assert:(report at:10) equals: '         Salida por transferencia de 50 pesos'.
+	self assert:(report at:11) equals: '         Entrada por transferencia de 250 pesos'.
+	self assert:(report at:12) equals: '         Balance = 200 pesos'.
+	self assert:(report at:13) equals: '      Balance = 200 pesos'.
+	self assert:(report at:14) equals: '   Cuenta de Jose'.
+	self assert:(report at:15) equals: '      Extraccion por 20 pesos'.
+	self assert:(report at:16) equals: '      Balance = -20 pesos'.
+	self assert:(report at:17) equals: '   Balance = -70 pesos'.! !
+
+
+!classDefinition: #ReportTestRevenge category: 'ServiciosFinancieros-Ejercicio2'!
+TestCase subclass: #ReportTestRevenge
+	instanceVariableNames: 'mainPortfolio mariasAccount juansAccount childrenPortfolio josesAccount cousinPortfolio'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio2'!
+
+!ReportTestRevenge methodsFor: 'setUp' stamp: 'LEI 12/5/2021 23:24:52'!
+setUp
+
+
+	mainPortfolio := Portfolio named: 'Portfolio familia Vallejos'.
+	mariasAccount := ReceptiveAccount named: 'Cuenta de Maria'.
+	juansAccount := ReceptiveAccount named: 'Cuenta de Juan'.
+	josesAccount := ReceptiveAccount named: 'Cuenta de Jose'.
+	childrenPortfolio := Portfolio named: 'Portfolio de hijos'.
+	cousinPortfolio := Portfolio named: 'Portfolio de primos'.
+	
+	
+	.! !
+
+
+!ReportTestRevenge methodsFor: 'Summary Test' stamp: 'LEI 12/5/2021 23:38:46'!
+test01SummaryOfAnEmptyAccount
+
+| 	accountSumary  |
+	
+	
+	accountSumary:= AccountSummary of: mariasAccount .
+	
+	self assert: accountSumary totalNumberOfTextLinesEquals: 1.
+	self assert: accountSumary atLine: 1  equals: 'Balance = 0 pesos'.
+! !
+
+!ReportTestRevenge methodsFor: 'Summary Test' stamp: 'LEI 12/5/2021 23:15:42'!
+test02SummaryOfAnAccountWithATransaction
+	
+	| accountSumary |
+
+	
+	Deposit register: 100 * peso on: mariasAccount .
+	
+	accountSumary := AccountSummary of: mariasAccount .
+	
+	self assert: accountSumary size equals: 2.
+	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
+	self assert: (accountSumary at: 2) equals: 'Balance = 100 pesos'.! !
+
+!ReportTestRevenge methodsFor: 'Summary Test' stamp: 'LEI 12/5/2021 23:16:50'!
+test03SummaryOfAnAccountWithManyTransaction
+	
+	| accountSumary |
+.
+	
+	Deposit register: 100 * peso on: mariasAccount .
+	Withdraw register: 50 * peso on: mariasAccount .
+	Transfer from: mariasAccount to: juansAccount for: 25 * peso.
+	Transfer from: juansAccount to: mariasAccount for: 15 * peso.
+	
+	
+	accountSumary := AccountSummary of: mariasAccount .
+	
+	self assert: accountSumary size equals: 5.
+	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
+	self assert: (accountSumary at: 2) equals: 'Extraccion por 50 pesos'.
+	self assert: (accountSumary at: 3) equals: 'Salida por transferencia de 25 pesos'.
+	self assert: (accountSumary at: 4) equals: 'Entrada por transferencia de 15 pesos'.
+	self assert: (accountSumary at: 5) equals: 'Balance = 40 pesos'.! !
+
+!ReportTestRevenge methodsFor: 'Summary Test' stamp: 'LEI 12/5/2021 23:17:23'!
+test04SummaryOfAnEmptyPortfolio
+	
+	| accountSumary |
+	
+	
+	
+
+	
+	accountSumary := AccountSummary of: mainPortfolio .
+	
+	self assert: accountSumary size equals: 1.
+	self assert: (accountSumary at: 1) equals: 'Balance = 0 pesos'.! !
+
+!ReportTestRevenge methodsFor: 'Summary Test' stamp: 'LEI 12/5/2021 23:21:08'!
+test05SummaryOfAportfolioWithManyAccontsWithTrasactions
+	
+	| accountSumary  |
+.
+	
+	Deposit register: 100 * peso on: mariasAccount .
+	Withdraw register: 75* peso on: josesAccount .
+	
+	mainPortfolio registerAccount: mariasAccount .
+	mainPortfolio  registerAccount: josesAccount .
+
+	
+	accountSumary := AccountSummary of: mainPortfolio .
+	
+	self assert: accountSumary size equals: 3.
+	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
+	self assert: (accountSumary at: 2) equals: 'Extraccion por 75 pesos'.
+	self assert: (accountSumary at: 3) equals: 'Balance = 25 pesos'.
+	 ! !
+
+!ReportTestRevenge methodsFor: 'Summary Test' stamp: 'LEI 12/5/2021 23:19:07'!
+test06SummaryOfAPortfolioWithAnAccountAndPortfolioWihAnAccount
+	
+	| accountSumary |
+
+
+	
+	Deposit register: 100 * peso on: mariasAccount .
+	Withdraw register: 75* peso on: juansAccount .
+	
+	mainPortfolio registerAccount: mariasAccount .
+	childrenPortfolio  registerAccount: juansAccount .
+	mainPortfolio registerAccount: childrenPortfolio .
+
+	
+	accountSumary := AccountSummary of: mainPortfolio .
+	
+	self assert: accountSumary size equals: 3.
+	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
+	self assert: (accountSumary at: 2) equals: 'Extraccion por 75 pesos'.
+	self assert: (accountSumary at: 3) equals: 'Balance = 25 pesos'.
+	 ! !
+
+!ReportTestRevenge methodsFor: 'Summary Test' stamp: 'LEI 12/5/2021 23:29:33'!
+test07SummaryWithPortfoliosWithPorfoliosThatHaveAccounts
+	
+	| accountSumary |
+
+
+	
+	Deposit register: 100 * peso on: mariasAccount .
+	Withdraw register: 75* peso on: juansAccount .
+	
+	childrenPortfolio registerAccount: mariasAccount .
+	cousinPortfolio  registerAccount: juansAccount .
+	
+	
+	mainPortfolio registerAccount: childrenPortfolio. 
+	mainPortfolio registerAccount: cousinPortfolio .
+	
+
+	
+	accountSumary := AccountSummary of: mainPortfolio .
+	
+	self assert: accountSumary size equals: 3.
+	self assert: (accountSumary at: 1) equals: 'Deposito por 100 pesos'.
+	self assert: (accountSumary at: 2) equals: 'Extraccion por 75 pesos'.
+	self assert: (accountSumary at: 3) equals: 'Balance = 25 pesos'.! !
+
+
+!ReportTestRevenge methodsFor: 'private' stamp: 'LEI 12/5/2021 23:36:35'!
+assert: aReport atLine: aLine equals: aString
+	self assert:(aReport at: aLine) equals:aString.! !
+
+!ReportTestRevenge methodsFor: 'private' stamp: 'LEI 12/5/2021 23:38:04'!
+assert: aReport totalNumberOfTextLinesEquals: anAmount
+	self assert: aReport size equals: anAmount.! !
+
+
+!ReportTestRevenge methodsFor: 'Transfer Net test' stamp: 'LEI 12/5/2021 23:39:46'!
+test01TNEmptyAccount
+	|transferNet |
+	
+
+	transferNet := TransferNet of: mariasAccount .
+	
+	self assert: transferNet   totalNumberOfTextLinesEquals: 1.
+	self assert: transferNet atLine: 1  equals: 'Neto de transferencias = 0 pesos'.! !
+
+!ReportTestRevenge methodsFor: 'Transfer Net test' stamp: 'LEI 12/5/2021 23:33:58'!
+test02TNAccountWithOnlyTransferTransactions
+
+
+| 	transferNet |
+
+	
+	
+	Transfer from: mariasAccount to: juansAccount for: 10 * peso.
+	Transfer from: juansAccount to: mariasAccount for: 20 * peso.
+	
+	transferNet := TransferNet of: mariasAccount .
+	
+	self assert:(transferNet size) equals: 1.
+	self assert: (transferNet at: 1) equals: 'Neto de transferencias = 10 pesos'.
+	! !
 
 
 !classDefinition: #Account category: 'ServiciosFinancieros-Ejercicio2'!
@@ -955,6 +1196,12 @@ name
 !Account methodsFor: 'main protocol' stamp: 'LEI 11/30/2021 15:47:21'!
 transactions
 	self subclassResponsibility.! !
+
+
+!Account methodsFor: 'as yet unclassified' stamp: 'LEI 12/3/2021 21:53:04'!
+visitedByReport: aReport
+
+	self subclassResponsibility .! !
 
 
 !classDefinition: #Portfolio category: 'ServiciosFinancieros-Ejercicio2'!
@@ -1072,6 +1319,13 @@ registerAccount: anAccount
 		].
 	! !
 
+
+!Portfolio methodsFor: 'process' stamp: 'LEI 12/3/2021 21:59:22'!
+visitedByReport: aReport
+	aReport processPortfolio: self.
+
+	! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Portfolio class' category: 'ServiciosFinancieros-Ejercicio2'!
@@ -1171,6 +1425,11 @@ register: aTransaction
 
 	transactions add: aTransaction 
 ! !
+
+
+!ReceptiveAccount methodsFor: 'process' stamp: 'LEI 12/3/2021 22:01:46'!
+visitedByReport: aReport
+	aReport processReceptiveAccount: self.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1413,21 +1672,35 @@ Object subclass: #Report
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:39:33'!
+!Report methodsFor: 'processing accounts' stamp: 'LEI 12/5/2021 22:45:13'!
+processPortfolio: aPortfolio
+	self subclassResponsibility! !
+
+!Report methodsFor: 'processing accounts' stamp: 'LEI 12/5/2021 22:45:45'!
+processReceptiveAccount: aRepectiveAccount
+	self subclassResponsibility! !
+
+
+!Report methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:39:33'!
 processDeposit: aDeposit
 	^self subclassResponsibility.! !
 
-!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:40:15'!
+!Report methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:40:15'!
 processTransferDeposit: aTransferDeposit
 	^self subclassResponsibility.! !
 
-!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:40:24'!
+!Report methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:40:24'!
 processTransferWithdraw: aTransferWithdraw
 	^self subclassResponsibility.! !
 
-!Report methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:39:46'!
+!Report methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:39:46'!
 processWithdraw: aWithdraw
 	^self subclassResponsibility.! !
+
+
+!Report methodsFor: 'text' stamp: 'LEI 12/5/2021 22:58:55'!
+addTextLine: aText
+	self subclassResponsibility .! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1447,22 +1720,22 @@ Report subclass: #AccountSummary
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:49:22'!
+!AccountSummary methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:49:22'!
 processDeposit: aDeposit
 	report add: ('Deposito por ', (aDeposit value) asString).
 	! !
 
-!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:51:06'!
+!AccountSummary methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:51:06'!
 processTransferDeposit: aTransferDeposit
 	report add: ('Entrada por transferencia de ', (aTransferDeposit value) asString).
 	! !
 
-!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:51:31'!
+!AccountSummary methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:51:31'!
 processTransferWithdraw: aTransferWithdraw
 	report add: ('Salida por transferencia de ', (aTransferWithdraw value) asString).
 	! !
 
-!AccountSummary methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:50:11'!
+!AccountSummary methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:50:11'!
 processWithdraw: aWithdraw
 	report add: ('Extraccion por ', (aWithdraw value) asString).
 	! !
@@ -1505,46 +1778,55 @@ initializeWith: aPortfolio
 	^report.! !
 
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:43:10'!
+!PortfolioDetailedTreePrinter methodsFor: 'private' stamp: 'LEI 12/5/2021 22:54:49'!
 addAccountsDataFromPortfolio: aPortfolio
-	report add: (self tabs,aPortfolio name).
-	numberOfTabs := numberOfTabs +1.
-	aPortfolio forEachDirectChildAccountDo: [:childAccount| 
-			'childAccount visitedByReport: self'.
-			(childAccount isKindOf: Portfolio)ifTrue:[self addAccountsDataFromPortfolio: childAccount].
-			(childAccount isKindOf: ReceptiveAccount )ifTrue: [
-				report add: (self tabs,childAccount name).
-				numberOfTabs := numberOfTabs +1.
-				childAccount forEachTransactionDo: [:aTransaction| aTransaction visitedByReport: self].
-				].
-				report add: (self tabs,'Balance = ',childAccount balance asString).
-				numberOfTabs := numberOfTabs -1.
-		].
-	report add:(self tabs,'Balance = ',aPortfolio balance asString).
+	
+	self addTextLine: aPortfolio name.
+	self increaseIndentation .
+	
+	aPortfolio forEachDirectChildAccountDo: [:childAccount| childAccount visitedByReport: self	].
+	
+	
+	self addTextLine: ('Balance = ',aPortfolio balance asString).
+	self decreaseIndentation.! !
+
+
+!PortfolioDetailedTreePrinter methodsFor: 'text' stamp: 'LEI 12/5/2021 22:50:47'!
+addTextLine: aText
+	
+	report add: (self tabs,aText).! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'text' stamp: 'LEI 12/5/2021 22:53:44'!
+decreaseIndentation
 	numberOfTabs := numberOfTabs - 1.! !
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:39:13'!
-processDeposit: aDeposit
-	report add: (self tabs,'Deposito por ',aDeposit value asString).! !
+!PortfolioDetailedTreePrinter methodsFor: 'text' stamp: 'LEI 12/5/2021 22:53:53'!
+increaseIndentation
+	numberOfTabs := numberOfTabs + 1.! !
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:39:45'!
-processTransferDeposit: aTransferDeposit
-	report add: (self tabs,'Entrada por transferencia por ',aTransferDeposit value asString).! !
-
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:40:04'!
-processTransferWithdraw: aTransferWithdraw
-	report add: (self tabs,'Salida por transferencia por ',aTransferWithdraw value asString).! !
-
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:39:06'!
-processWithdraw: aWithdraw
-	report add: (self tabs,'Extraccion por ',aWithdraw value asString).! !
-
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 17:34:19'!
+!PortfolioDetailedTreePrinter methodsFor: 'text' stamp: 'FLM 12/3/2021 17:34:19'!
 tabs
 	|tabs|
 	tabs:=''.
 	(1 to: numberOfTabs ) do:[:i| tabs := ('   ',tabs)].
 	^tabs.! !
+
+
+!PortfolioDetailedTreePrinter methodsFor: 'processing transactions' stamp: 'LEI 12/4/2021 01:36:18'!
+processPortfolio: aPortfolio
+	self addAccountsDataFromPortfolio: aPortfolio! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'processing transactions' stamp: 'LEI 12/5/2021 22:40:02'!
+processReceptiveAccount: anAccount
+	report add: (self tabs,anAccount name).
+	numberOfTabs := numberOfTabs +1.
+	
+	
+	(AccountSummary of: anAccount) do:[:aSummaryReport| report add: (self tabs,aSummaryReport)].
+	numberOfTabs := numberOfTabs -1.
+			
+			
+			.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1572,23 +1854,43 @@ initializeWith: aPortfolio
 	^report.! !
 
 
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 16:54:03'!
-addAccountsNameFromPortfolio: aPortfolio
-	report add: (self tabs,aPortfolio name).
-	numberOfTabs := numberOfTabs +1.
-	aPortfolio forEachDirectChildAccountDo: [:childAccount| 
-			'childAccount visitedByReport: self'.
-			(childAccount isKindOf: Portfolio)ifTrue:[self addAccountsNameFromPortfolio: childAccount].
-			(childAccount isKindOf: ReceptiveAccount )ifTrue: [report add: (self tabs,childAccount name).].
-		].
+!PortfolioTreePrinter methodsFor: 'text' stamp: 'LEI 12/5/2021 22:59:30'!
+addTextLine: aText
+	report add: (self tabs, aText).! !
+
+!PortfolioTreePrinter methodsFor: 'text' stamp: 'LEI 12/5/2021 23:01:41'!
+decreaseIndentation
 	numberOfTabs := numberOfTabs - 1.! !
 
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'FLM 12/3/2021 16:38:33'!
+!PortfolioTreePrinter methodsFor: 'text' stamp: 'LEI 12/5/2021 23:01:23'!
+increaseIndentation
+	numberOfTabs := numberOfTabs + 1.! !
+
+!PortfolioTreePrinter methodsFor: 'text' stamp: 'FLM 12/3/2021 16:38:33'!
 tabs
 	|tabs|
 	tabs:=''.
 	(1 to: numberOfTabs ) do:[:i| tabs := ('   ',tabs)].
 	^tabs.! !
+
+
+!PortfolioTreePrinter methodsFor: 'private' stamp: 'LEI 12/5/2021 23:02:43'!
+addAccountsNameFromPortfolio: aPortfolio
+	self addTextLine: (self tabs,aPortfolio name).
+	self increaseIndentation .
+	aPortfolio forEachDirectChildAccountDo: [:childAccount| childAccount visitedByReport: self.].
+	self decreaseIndentation.! !
+
+
+!PortfolioTreePrinter methodsFor: 'processing accounts' stamp: 'LEI 12/3/2021 21:58:58'!
+processPortfolio: aPortfolio
+	self addAccountsNameFromPortfolio: aPortfolio
+	
+	! !
+
+!PortfolioTreePrinter methodsFor: 'processing accounts' stamp: 'LEI 12/3/2021 22:02:42'!
+processReceptiveAccount: anAccount
+	report add: (self tabs,anAccount name)! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1608,21 +1910,21 @@ Report subclass: #TransferNet
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio2'!
 
-!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:59:20'!
+!TransferNet methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:59:20'!
 processDeposit: aDeposit
 	! !
 
-!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 15:00:06'!
+!TransferNet methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 15:00:06'!
 processTransferDeposit: aTransferDeposit
 	net := net + aTransferDeposit balanceValue.
 	! !
 
-!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 15:00:22'!
+!TransferNet methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 15:00:22'!
 processTransferWithdraw: aTransferWithdraw
 	net := net + aTransferWithdraw balanceValue.
 	! !
 
-!TransferNet methodsFor: 'visiting transactions' stamp: 'FLM 12/3/2021 14:59:28'!
+!TransferNet methodsFor: 'processing transactions' stamp: 'FLM 12/3/2021 14:59:28'!
 processWithdraw: aWithdraw
 	! !
 
